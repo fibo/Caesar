@@ -14,9 +14,9 @@
   ],
   "author": "Gianluca Casati (https://fibo.github.io/)",
   "devDependencies": {
-    "@electron-forge/cli": "^7.8.2",
-    "electron": "37.2.4",
-    "lefthook": "^1.12.2",
-    "prettier": "^3.6.2"
+    "@electron-forge/cli": "7.8.2",
+    "electron": "37.2.5",
+    "lefthook": "1.12.2",
+    "prettier": "3.6.2"
   }
 }
