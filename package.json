@@ -5,6 +5,7 @@
   "description": "File encryption desktop app",
   "main": "app/main.cjs",
   "scripts": {
+    "check_types": "tsc",
     "start": "electron-forge start"
   },
   "keywords": [
