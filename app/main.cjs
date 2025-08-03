@@ -2,6 +2,8 @@ const path = require("node:path")
 const { app, BrowserWindow } = require("electron")
 const { setupIPC } = require("./IPC.cjs")
 
+const DEVTOOLS = process.env.DEVTOOLS
+
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -11,6 +13,9 @@ function createWindow() {
     }
   })
   mainWindow.loadFile("app/index.html")
+  if (DEVTOOLS) {
+    mainWindow.webContents.openDevTools()
+  }
 }
 
 app.whenReady().then(() => {
