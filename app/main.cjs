@@ -1,14 +1,20 @@
+const path = require("node:path")
 const { app, BrowserWindow } = require("electron")
+const { setupIPC } = require("./IPC.cjs")
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.cjs")
+    }
   })
   mainWindow.loadFile("app/index.html")
 }
 
 app.whenReady().then(() => {
+  setupIPC()
   createWindow()
 
   app.on("activate", function () {
