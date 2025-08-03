@@ -1,0 +1,9 @@
+pre-commit:
+  commands:
+    prettier:
+      run: ./node_modules/.bin/prettier --write {staged_files}
+      stage_fixed: true
+      glob:
+        - "package.json"
+        - "forge.config.cjs"
+        - "app/*.{cjs,js,html,css}"
