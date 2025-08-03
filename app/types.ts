@@ -1,10 +1,10 @@
 /** API exposed by Electron context bridge. */
 export type WindowElectron = {
-  generateIdentity: () => Promise<void>;
+  generateIdentity: () => void
 }
 
 declare global {
   interface Window {
-    electron: WindowElectron;
+    electron: WindowElectron
   }
 }

@@ -8,4 +8,4 @@ pre-commit:
       glob:
         - "{package,tsconfig}.json"
         - "forge.config.cjs"
-        - "app/*.{cjs,js,html,css}"
+        - "app/*.{cjs,js,ts,html,css}"

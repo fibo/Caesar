@@ -1,9 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron/renderer")
 
-contextBridge.exposeInMainWorld(
-  "electron",
-  /** @type {import('./window.d.ts').WindowElectron} */
-  {
-    generateIdentity: () => ipcRenderer.send("generateIdentity")
-  }
-)
+/** @type {import('./types').WindowElectron} */
+const windowElectron = {
+  generateIdentity: () => ipcRenderer.send("generate-identity")
+}
+
+contextBridge.exposeInMainWorld("electron", windowElectron)

@@ -5,5 +5,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["app", "forge.config.js"]
+  "include": ["app", "forge.config.cjs"]
 }

@@ -9,7 +9,7 @@ async function generateIdentity() {
 }
 
 function setupIPC() {
-  ipcMain.on("generateIdentity", generateIdentity)
+  ipcMain.on("generate-identity", generateIdentity)
 }
 
 module.exports = {
