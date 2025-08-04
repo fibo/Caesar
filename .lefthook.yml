@@ -1,0 +1,11 @@
+pre-commit:
+  commands:
+    check_types:
+      run: "npm run check_types"
+    prettier:
+      run: ./node_modules/.bin/prettier --write {staged_files}
+      stage_fixed: true
+      glob:
+        - "{package,tsconfig}.json"
+        - "forge.config.cjs"
+        - "app/*.{cjs,js,ts,html,css}"

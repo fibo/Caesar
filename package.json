@@ -1,0 +1,30 @@
+{
+  "name": "electron-age",
+  "version": "0.0.0",
+  "private": true,
+  "description": "File encryption desktop app",
+  "main": "app/main.cjs",
+  "scripts": {
+    "check_types": "tsc",
+    "start": "electron-forge start"
+  },
+  "keywords": [
+    "encryption",
+    "desktop",
+    "app"
+  ],
+  "author": "Gianluca Casati (https://fibo.github.io/)",
+  "dependencies": {
+    "age-encryption": "0.2.4"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "7.8.2",
+    "electron": "37.2.5",
+    "lefthook": "1.12.2",
+    "prettier": "3.6.2",
+    "typescript": "5.9.2"
+  },
+  "volta": {
+    "node": "22.17.1"
+  }
+}
