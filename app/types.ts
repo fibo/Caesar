@@ -9,4 +9,4 @@ declare global {
   }
 }
 
-export type IpcEvent = "GENERATE_IDENTITY"
+export type IpcEvent = 'GENERATE_IDENTITY'

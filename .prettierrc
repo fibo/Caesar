@@ -1,2 +1,4 @@
+# https://prettier.io/docs/configuration
+singleQuote: true
 semi: false
-trailingComma: 'none'
+trailingComma: "none"
