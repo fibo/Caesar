@@ -8,3 +8,5 @@ declare global {
     electron: WindowElectron
   }
 }
+
+export type IpcEvent = "GENERATE_IDENTITY"
