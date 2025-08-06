@@ -1,3 +1,5 @@
+const path = require('path')
+
 /** @type {import('@electron-forge/shared-types').ForgeConfig} */
 module.exports = {
   packagerConfig: {
@@ -11,6 +13,7 @@ module.exports = {
       /\.lefthook\.yml/,
       /\.npmrc/,
       /\.prettierrc/,
+      /assets\/images\/dmg-installer-background\.png/,
       /forge\.config\.cjs/,
       /tsconfig\.json/
     ]
@@ -18,7 +21,15 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-dmg',
-      config: {}
+      config: {
+        // Template image: node_modules/electron-installer-dmg/resources/mac/background.png
+        background: path.join(
+          __dirname,
+          'assets',
+          'images',
+          'dmg-installer-background.png'
+        )
+      }
     }
   ]
 }
