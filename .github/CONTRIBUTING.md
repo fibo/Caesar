@@ -66,3 +66,24 @@ Once you are done, you can unmount it with
 hdiutil detach /Volumes/Caesar
 ```
 
+### How to create Apple .icns file
+
+Prepare a _.iconset_ folder like [Caesar.iconset](../assets/logos/Caesar.iconset) according to Apple specification, with the following files:
+
+    icon_128x128.png
+    icon_128x128@2x.png
+    icon_16x16.png
+    icon_16x16@2x.png
+    icon_256x256.png
+    icon_256x256@2x.png
+    icon_32x32.png
+    icon_32x32@2x.png
+    icon_512x512.png
+    icon_512x512@2x.png
+
+Then on a Mac run a command like the following to create the _Caesar.icns_ file:
+
+```shell
+cd assets/logos/
+iconutil -c icns Caesar.iconset
+```

@@ -5,6 +5,7 @@ module.exports = {
   packagerConfig: {
     appCategoryType: 'public.app-category.utilities',
     asar: true,
+    icon: path.resolve(__dirname, 'assets', 'logos', 'Caesar'),
     ignore: [
       /README\.md/,
       /\.editorconfig/,
@@ -14,9 +15,12 @@ module.exports = {
       /\.npmrc/,
       /\.prettierrc/,
       /assets\/images\/dmg-installer-background\.png/,
+      /assets\/logos\//,
+      /assets\/videos\//,
       /forge\.config\.cjs/,
       /tsconfig\.json/
-    ]
+    ],
+    name: 'Caesar'
   },
   makers: [
     {
@@ -28,7 +32,8 @@ module.exports = {
           'assets',
           'images',
           'dmg-installer-background.png'
-        )
+        ),
+        icon: path.join(__dirname, 'assets', 'logos', 'Caesar.icns')
       }
     }
   ]
