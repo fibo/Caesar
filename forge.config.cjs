@@ -37,6 +37,21 @@ module.exports = {
         ),
         icon: path.join(__dirname, 'assets', 'logos', 'Caesar.icns')
       }
+    },
+    {
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: () => ({
+        iconUrl:
+          'https://raw.githubusercontent.com/fibo/Caesar/refs/heads/main/assets/logos/Caesar.ico',
+        loadingGif: path.join(
+          __dirname,
+          'assets',
+          'videos',
+          'ALEA_IACTA_EST.gif'
+        ),
+        setupIcon: path.join(__dirname, 'assets', 'logo', 'Caesar.ico')
+      })
     }
   ],
   plugins: [

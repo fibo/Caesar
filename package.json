@@ -9,6 +9,7 @@
     "make": "electron-forge make",
     "make:darwin-arm64": "electron-forge make --platform darwin --arch arm64",
     "make:darwin-x64": "electron-forge make --platform darwin --arch x64",
+    "make:win32": "electron-forge make --platform win32",
     "start": "electron-forge start"
   },
   "keywords": [
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@electron-forge/cli": "7.8.2",
     "@electron-forge/maker-dmg": "7.8.2",
+    "@electron-forge/maker-squirrel": "7.8.3",
     "@electron-forge/plugin-fuses": "7.8.3",
     "electron": "37.2.5",
     "lefthook": "1.12.2",
