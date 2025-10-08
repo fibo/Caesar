@@ -87,3 +87,12 @@ Then on a Mac run a command like the following to create the _Caesar.icns_ file:
 cd assets/logos/
 iconutil -c icns Caesar.iconset
 ```
+
+### How to create animated GIF loader
+
+Animated GIF *assets/videos/ALEA_IACTA_EST.gif* was created with command
+
+```shell
+ffmpeg -i assets/videos/ALEA_IACTA_EST-black.mp4 -vf "fps=20,scale=280:-1:flags=lanczos" assets/videos/ALEA_IACTA_EST.gif
+```
+
