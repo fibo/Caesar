@@ -4,6 +4,15 @@ const path = require('path')
 
 /** @type {import('@electron-forge/shared-types').ForgeConfig} */
 module.exports = {
+  hooks: {
+    readPackageJson: async (_forgeConfig, packageJson) => {
+      delete packageJson.author
+      delete packageJson.keywords
+      delete packageJson.scripts
+      delete packageJson.volta
+      return packageJson
+    }
+  },
   packagerConfig: {
     appCategoryType: 'public.app-category.utilities',
     asar: true,
