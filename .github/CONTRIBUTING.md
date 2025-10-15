@@ -1,8 +1,34 @@
+# Contributing to Caesar
+
 ## Requirements
 
 [Node.js](https://nodejs.org/) version used is the one related to Electron version used, according to [Elecron releases](https://releases.electronjs.org/).
 
 Install [Volta](https://volta.sh/) or use Node.js version listed in `volta` attribute in the [package.json](../package.json).
+
+## Build app for distribution
+
+To build on Windows, launch this from a Windows machine
+
+```shell
+npm run make
+```
+
+The installer will be created in the `out/make` folder.
+
+On Mac, you can target both Intel and ARM architectures.
+
+For Intel (x64) architecture, run this from a Mac machine
+
+```shell
+npm run make:darwin-x64
+```
+
+For ARM (arm64) architecture, run this from a Mac machine
+
+```shell
+npm run make:darwin-arm64
+```
 
 ## Start app locally
 
