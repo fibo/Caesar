@@ -1,11 +1,14 @@
 {
-  "name": "electron-age",
+  "name": "Caesar",
   "version": "0.0.0",
   "private": true,
   "description": "File encryption desktop app",
   "main": "app/main.cjs",
   "scripts": {
     "check_types": "tsc",
+    "make": "electron-forge make",
+    "make:darwin-arm64": "electron-forge make --platform darwin --arch arm64",
+    "make:darwin-x64": "electron-forge make --platform darwin --arch x64",
     "start": "electron-forge start"
   },
   "keywords": [
@@ -19,6 +22,9 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "7.8.2",
+    "@electron-forge/maker-dmg": "7.8.2",
+    "@electron-forge/plugin-fuses": "7.8.3",
+    "app-builder-lib": "26.0.12",
     "electron": "37.2.5",
     "lefthook": "1.12.2",
     "prettier": "3.6.2",

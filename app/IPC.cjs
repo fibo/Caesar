@@ -1,7 +1,14 @@
 // Inter Process Communication
 
-const age = require("age-encryption")
-const { ipcMain } = require("electron")
+const age = require('age-encryption')
+const { ipcMain } = require('electron')
+
+/**
+ * @typedef {import('./types').IpcEvent} IpcEvent
+ */
+
+/** @type {IpcEvent} */
+const GENERATE_IDENTITY = 'GENERATE_IDENTITY'
 
 async function generateIdentity() {
   const identity = await age.generateIdentity()
@@ -9,7 +16,7 @@ async function generateIdentity() {
 }
 
 function setupIPC() {
-  ipcMain.on("generate-identity", generateIdentity)
+  ipcMain.on(GENERATE_IDENTITY, generateIdentity)
 }
 
 module.exports = {
