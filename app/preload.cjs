@@ -1,15 +1,12 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
-/**
- * @typedef {import('./types').IpcEvent} IpcEvent
- * @typedef {import('./types').WindowElectron} WindowElectron
- */
-
-/** @type {IpcEvent} */ const GENERATE_IDENTITY = 'GENERATE_IDENTITY'
-
 /** @type {import('./types').WindowElectron} */
 const windowElectron = {
-  generateIdentity: () => ipcRenderer.send(GENERATE_IDENTITY)
+  chooseFilesDialog: async () => ipcRenderer.invoke('CHOOSE_FILES_DIALOG'),
+  encryptWithPassphrase: async (passphrase, files) =>
+    ipcRenderer.invoke('ENCRYPT_WITH_PASSPHRASE', passphrase, files),
+  decryptWithPassphrase: async (passphrase, files) =>
+    ipcRenderer.invoke('DECRYPT_WITH_PASSPHRASE', passphrase, files)
 }
 
 contextBridge.exposeInMainWorld('electron', windowElectron)

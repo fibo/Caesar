@@ -12,15 +12,16 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.cjs')
     }
   })
-  mainWindow.loadFile('app/index.html')
+  mainWindow.loadFile('app/ui/index.html')
   if (DEVTOOLS) {
     mainWindow.webContents.openDevTools()
   }
+  return mainWindow
 }
 
 app.whenReady().then(() => {
-  setupIPC()
   createWindow()
+  setupIPC()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
