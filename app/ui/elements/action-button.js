@@ -6,6 +6,8 @@ class ActionButton extends HTMLElement {
   connectedCallback() {
     const { button } = this
 
+    button.type = 'button'
+    button.classList.add('primary')
     button.addEventListener('click', this)
 
     subscribe('CRYPT_DIRECTION', (value) => {
