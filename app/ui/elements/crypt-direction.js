@@ -15,8 +15,8 @@ class CryptDirection extends HTMLElement {
 
     const encryptText = document.createElement('span')
     const decryptText = document.createElement('span')
-    encryptText.textContent = 'encrypt'
-    decryptText.textContent = 'decrypt'
+    encryptText.textContent = 'Encrypt'
+    decryptText.textContent = 'Decrypt'
 
     const encryptLabel = document.createElement('label')
     const decryptLabel = document.createElement('label')

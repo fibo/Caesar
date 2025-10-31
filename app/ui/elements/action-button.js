@@ -11,8 +11,8 @@ class ActionButton extends HTMLElement {
     button.addEventListener('click', this)
 
     subscribe('CRYPT_DIRECTION', (value) => {
-      if (value === 'encrypt') button.textContent = 'encrypt'
-      if (value === 'decrypt') button.textContent = 'decrypt'
+      if (value === 'encrypt') button.textContent = 'Encrypt Files'
+      if (value === 'decrypt') button.textContent = 'Decrypt Files'
     })
 
     this.appendChild(button)

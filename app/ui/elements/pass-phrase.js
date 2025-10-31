@@ -2058,7 +2058,7 @@ const wordList = [
 
 class PassPhrase extends HTMLElement {
   generateButton = document.createElement('button')
-  input = document.createElement('input')
+  passphraseInput = document.createElement('input')
 
   bip39Checkbox = document.createElement('input')
 
@@ -2069,7 +2069,7 @@ class PassPhrase extends HTMLElement {
 
   connectedCallback() {
     const {
-      input,
+      passphraseInput,
       generateButton,
       bip39Checkbox,
       bip39Container,
@@ -2078,17 +2078,21 @@ class PassPhrase extends HTMLElement {
       numWordsValue
     } = this
 
-    const inputContainer = document.createElement('div')
-    const inputLabel = document.createElement('label')
-    inputLabel.textContent = 'passphrase'
+    const passphraseInputContainer = document.createElement('div')
+    passphraseInputContainer.classList.add('input-text')
+    const passphraseInputLabel = document.createElement('label')
+    passphraseInputLabel.textContent = 'Passphrase'
+    passphraseInputLabel.htmlFor = passphraseInput.id = 'passphrase'
+    passphraseInput.type = 'text'
+    passphraseInputContainer.append(passphraseInputLabel, passphraseInput)
 
-    inputContainer.append(inputLabel, input)
-
-    const bip39Label = document.createElement('label')
-    const bip39Text = document.createElement('span')
-    bip39Text.textContent = 'use BIP39 passphrase'
+    const bip39CheckboxContainer = document.createElement('div')
+    bip39CheckboxContainer.classList.add('input-checkbox')
+    const bip39CheckboxLabel = document.createElement('label')
+    bip39CheckboxLabel.htmlFor = bip39Checkbox.id = 'use-bip39'
+    bip39CheckboxLabel.textContent = 'Use BIP39 Passphrase'
     bip39Checkbox.type = 'checkbox'
-    bip39Label.append(bip39Checkbox, bip39Text)
+    bip39CheckboxContainer.append(bip39Checkbox, bip39CheckboxLabel)
 
     const numWordsContainer = document.createElement('div')
 
@@ -2104,12 +2108,12 @@ class PassPhrase extends HTMLElement {
 
     numWordsContainer.append(numWordsLabel, numWordsRange, numWordsValue)
 
-    generateButton.textContent = 'generate passphrase'
+    generateButton.textContent = 'Generate Passphrase'
 
     bip39Container.append(numWordsContainer, generateButton)
     this.useBip39 = false
 
-    input.addEventListener('blur', this)
+    passphraseInput.addEventListener('blur', this)
     generateButton.addEventListener('click', this)
     numWordsRange.addEventListener('input', this)
     bip39Checkbox.addEventListener('input', this)
@@ -2125,13 +2129,17 @@ class PassPhrase extends HTMLElement {
       }
     })
 
-    this.append(inputContainer, bip39Label, bip39Container)
+    this.append(
+      passphraseInputContainer,
+      bip39CheckboxContainer,
+      bip39Container
+    )
   }
 
   /** @param {Event} event */
   handleEvent(event) {
-    if (event.type === 'blur' && event.target === this.input) {
-      const passphrase = this.input.value
+    if (event.type === 'blur' && event.target === this.passphraseInput) {
+      const passphrase = this.passphraseInput.value
       publish('PASSPHRASE', passphrase)
     }
 
@@ -2158,7 +2166,7 @@ class PassPhrase extends HTMLElement {
     if (value) {
       this.generatePassphrase()
     } else {
-      this.input.value = ''
+      this.passphraseInput.value = ''
       publish('PASSPHRASE', '')
     }
   }
@@ -2169,7 +2177,7 @@ class PassPhrase extends HTMLElement {
       return wordList[randIndex]
     })
     const passphrase = randomWords.join('-')
-    this.input.value = passphrase
+    this.passphraseInput.value = passphrase
     publish('PASSPHRASE', passphrase)
   }
 }
