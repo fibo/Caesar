@@ -4,9 +4,10 @@ import { subscribe } from '../pubsub.js'
 
 class FilesList extends HTMLElement {
   list = document.createElement('ul')
+  button = document.createElement('choose-files')
 
   connectedCallback() {
-    const { list } = this
+    const { button, list } = this
 
     subscribe('INPUT_FILES', (/** @type {FileInfo[]} */ files) => {
       list.replaceChildren()
@@ -17,7 +18,7 @@ class FilesList extends HTMLElement {
       }
     })
 
-    this.appendChild(list)
+    this.append(list, button)
   }
 }
 
