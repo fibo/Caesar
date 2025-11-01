@@ -1,4 +1,4 @@
-import { publish } from '../pubsub.js'
+import { publish } from '../state.js'
 
 class CryptDirection extends HTMLElement {
   encrypt = document.createElement('input')

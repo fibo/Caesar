@@ -1,4 +1,4 @@
-import { publish } from '../pubsub.js'
+import { publish } from '../state.js'
 
 class ChooseFiles extends HTMLElement {
   button = document.createElement('button')

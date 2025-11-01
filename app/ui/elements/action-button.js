@@ -1,4 +1,4 @@
-import { getState, subscribe } from '../pubsub.js'
+import { getState, subscribe } from '../state.js'
 
 class ActionButton extends HTMLElement {
   button = document.createElement('button')

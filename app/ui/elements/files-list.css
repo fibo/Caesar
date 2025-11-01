@@ -1,0 +1,5 @@
+files-list {
+  & ul {
+    list-style-type: none;
+  }
+}

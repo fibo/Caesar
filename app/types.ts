@@ -26,11 +26,14 @@ export type ChooseFileDialogResponse =
       status: 'canceled'
     }
 
-export type PubSubKey =
+export type StateKey =
+  | 'BIP39_NUM_WORDS'
   | 'CRYPT_DIRECTION'
   | 'INPUT_FILES'
   | 'LANGUAGE'
   | 'PASSPHRASE'
+
+export type LocalStorageKey = Extract<StateKey, 'BIP39_NUM_WORDS'>
 
 /** API exposed by Electron context bridge. */
 export type WindowElectron = {
