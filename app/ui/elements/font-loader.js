@@ -1,4 +1,4 @@
-import { subscribe } from '../pubsub.js'
+import { subscribe } from '../state.js'
 
 /**
  * @typedef {import('../../types').Font} Font

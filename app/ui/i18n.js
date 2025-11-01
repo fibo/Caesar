@@ -1,4 +1,4 @@
-import { publish } from './pubsub.js'
+import { getState, publish } from './state.js'
 
 /** @type {Language} */
 const defaultLanguage = 'en'
@@ -20,5 +20,8 @@ function detectLanguage() {
   }
 }
 
-const language = detectLanguage()
-publish('LANGUAGE', language)
+export function initializeLanguage() {
+  if (getState('LANGUAGE')) return
+  const language = detectLanguage()
+  publish('LANGUAGE', language)
+}

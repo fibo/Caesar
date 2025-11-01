@@ -1,24 +1,26 @@
 /**
- * @typedef {import('../types').PubSubKey} PubSubKey
+ * @typedef {import('../types').StateKey} StateKey
  */
 
 /**
  * App state
  *
- * @type {Map<PubSubKey, unknown>}
+ * @type {Map<StateKey, unknown>}
  */
 const state = new Map()
+
+export const bip39MaxNumWords = 10
 
 /** Registry of subscribers. */
 const registry = new Map()
 
-/** * @param {PubSubKey} key */
+/** * @param {StateKey} key */
 export function getState(key) {
   return state.get(key)
 }
 
 /**
- * @param {PubSubKey} key
+ * @param {StateKey} key
  * @param {unknown} value
  */
 export function publish(key, value) {
@@ -29,7 +31,7 @@ export function publish(key, value) {
 }
 
 /**
- * @param {PubSubKey} key
+ * @param {StateKey} key
  * @param {(value: unknown) => void} callback
  */
 export function subscribe(key, callback) {
@@ -44,4 +46,9 @@ export function subscribe(key, callback) {
     const subscribers = registry.get(key)
     if (subscribers) subscribers.delete(callback)
   }
+}
+
+export function initializeStateDefaults() {
+  publish('BIP39_NUM_WORDS', 1)
+  publish('CRYPT_DIRECTION', 'encrypt')
 }

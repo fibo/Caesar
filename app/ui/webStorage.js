@@ -1,0 +1,42 @@
+import { publish, subscribe } from './state.js'
+
+/**
+ * @typedef {import('../types').LocalStorageKey} LocalStorageKey
+ */
+
+/**
+ * @param {LocalStorageKey} key
+ * @return {unknown}
+ */
+function getLocalStorateItem(key) {
+  const value = localStorage.getItem(key)
+  if (!value) return
+  try {
+    return JSON.parse(value)
+  } catch (error) {
+    console.error(error)
+    return
+  }
+}
+
+/**
+ * @param {LocalStorageKey} key
+ * @param {unknown} value
+ */
+function setLocalStorateItem(key, value) {
+  localStorage.setItem(key, JSON.stringify(value))
+}
+
+export function initializeStateFromLocalStorage() {
+  for (const key of /** @type LocalStorageKey[] */ (['BIP39_NUM_WORDS'])) {
+    // Read value from localStorage and publish to state.
+    const value = getLocalStorateItem(key)
+    if (value !== undefined) {
+      publish(key, value)
+    }
+    // Subscribe to state changes and write to localStorage.
+    subscribe(key, (/** @type {unknown} */ value) => {
+      setLocalStorateItem(key, value)
+    })
+  }
+}
