@@ -1,4 +1,4 @@
-import { state, subscribe } from '../pubsub.js'
+import { getState, subscribe } from '../pubsub.js'
 
 class ActionButton extends HTMLElement {
   button = document.createElement('button')
@@ -11,8 +11,12 @@ class ActionButton extends HTMLElement {
     button.addEventListener('click', this)
 
     subscribe('CRYPT_DIRECTION', (value) => {
-      if (value === 'encrypt') button.textContent = 'Encrypt Files'
-      if (value === 'decrypt') button.textContent = 'Decrypt Files'
+      if (value === 'encrypt') {
+        button.textContent = 'Encrypt Files'
+      }
+      if (value === 'decrypt') {
+        button.textContent = 'Decrypt Files'
+      }
     })
 
     this.appendChild(button)
@@ -25,15 +29,15 @@ class ActionButton extends HTMLElement {
   /** @param {Event} event */
   handleEvent(event) {
     if (event.type === 'click') {
-      const passphrase = state.get('PASSPHRASE')
+      const passphrase = getState('PASSPHRASE')
       if (typeof passphrase !== 'string') return
       if (!passphrase) return
 
-      const files = state.get('INPUT_FILES')
+      const files = getState('INPUT_FILES')
       if (!Array.isArray(files)) return
       if (files.length === 0) return
 
-      const direction = state.get('CRYPT_DIRECTION')
+      const direction = getState('CRYPT_DIRECTION')
       if (direction === 'encrypt') {
         window.electron.encryptWithPassphrase(passphrase, files)
       }

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "lib": ["dom", "dom.iterable"],
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true
