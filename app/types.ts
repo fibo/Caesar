@@ -1,3 +1,11 @@
+export type Language = 'en' | 'it'
+
+export type Font = {
+  family: string
+  file: string
+  languages: Language[]
+}
+
 export type FileInfo = {
   id: string
   name: string
@@ -18,7 +26,11 @@ export type ChooseFileDialogResponse =
       status: 'canceled'
     }
 
-export type PubSubKey = 'CRYPT_DIRECTION' | 'INPUT_FILES' | 'PASSPHRASE'
+export type PubSubKey =
+  | 'CRYPT_DIRECTION'
+  | 'INPUT_FILES'
+  | 'LANGUAGE'
+  | 'PASSPHRASE'
 
 /** API exposed by Electron context bridge. */
 export type WindowElectron = {

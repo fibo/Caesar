@@ -52,6 +52,7 @@
 
 @layer typography {
   body {
+    /* font-family: is set by i18n-controller */
     font-size: var(--font-size);
   }
 }

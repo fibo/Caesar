@@ -7,7 +7,7 @@ class ChooseFiles extends HTMLElement {
     const { button } = this
 
     button.addEventListener('click', this)
-    button.textContent = 'choose files'
+    button.textContent = 'Choose Files'
     this.appendChild(button)
   }
 
