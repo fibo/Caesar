@@ -1,4 +1,4 @@
-import { publish } from '../state.js'
+import { publish, subscribe } from '../state.js'
 
 class CryptDirection extends HTMLElement {
   encrypt = document.createElement('input')
@@ -13,19 +13,24 @@ class CryptDirection extends HTMLElement {
       input.addEventListener('change', this)
     }
 
-    const encryptText = document.createElement('span')
-    const decryptText = document.createElement('span')
-    encryptText.textContent = 'Encrypt'
-    decryptText.textContent = 'Decrypt'
-
     const encryptLabel = document.createElement('label')
     const decryptLabel = document.createElement('label')
 
-    encryptLabel.append(encrypt, encryptText)
-    decryptLabel.append(decrypt, decryptText)
+    encryptLabel.textContent = 'Encrypt'
+    decryptLabel.textContent = 'Decrypt'
 
-    encrypt.checked = true
-    publish('CRYPT_DIRECTION', 'encrypt')
+    encryptLabel.append(encrypt)
+    decryptLabel.append(decrypt)
+
+    subscribe('CRYPT_DIRECTION', (direction) => {
+      if (direction === 'encrypt') {
+        encrypt.setAttribute('checked', '')
+        decrypt.removeAttribute('checked')
+      } else if (direction === 'decrypt') {
+        decrypt.setAttribute('checked', '')
+        encrypt.removeAttribute('checked')
+      }
+    })
 
     this.append(encryptLabel, decryptLabel)
   }

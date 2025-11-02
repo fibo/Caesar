@@ -3,6 +3,7 @@
  *
  * @remark As they are imports, they must be on top otherwise they are ignored.
  */
+@import url('./elements/crypt-direction.css');
 @import url('./elements/files-list.css');
 @import url('./elements/num-words.css');
 @import url('./elements/pass-phrase.css');
@@ -12,19 +13,28 @@
 
   color-scheme: light dark;
 
-  --color-green-1: #f1fbf4;
-  --color-green-5: #77da89;
-  --color-green-9: #061209;
+  --black: #000;
+  --white: #fff;
 
-  --ink-0: light-dark(#000000, #000000);
-  --paper-0: light-dark(#ffffff, #ffffff);
+  --green-0: hsl(140, 50%, 95%);
+  --green-1: hsl(140, 50%, 85%);
+  --green-2: hsl(140, 50%, 75%);
+  --green-3: hsl(140, 50%, 65%);
+  --green-4: hsl(140, 50%, 55%);
+  --green-5: hsl(140, 50%, 45%);
+  --green-6: hsl(140, 50%, 35%);
+  --green-7: hsl(140, 50%, 25%);
+  --green-8: hsl(140, 50%, 15%);
+  --green-9: hsl(140, 50%, 5%);
 
-  --ink-1: light-dark(#e4e4e4, #e4e4e4);
+  --ink-0: light-dark(hsl(0, 0%, 5%), hsl(0, 0%, 95%));
+  --ink-1: light-dark(hsl(0, 0%, 30%), hsl(0, 0%, 70%));
+  --ink-2: light-dark(hsl(0, 0%, 55%), hsl(0, 0%, 45%));
+  --ink-3: light-dark(hsl(0, 0%, 80%), hsl(0, 0%, 20%));
 
-  --paper-primary: var(--color-green-5);
-  --ink-primary: var(--color-green-9);
-
-  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --paper-dark: light-dark(hsl(0, 0%, 90%), hsl(0, 0%, 0%));
+  --paper: light-dark(hsl(0, 0%, 95%), hsl(0, 0%, 5%));
+  --paper-light: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 10%));
 
   /* Sizes */
 
@@ -41,6 +51,8 @@
   --radius-2: 16px;
 
   --input-height: 48px;
+
+  --max-width: 710px;
 }
 
 @layer reset {
@@ -76,11 +88,11 @@
   main {
     display: flex;
     flex-direction: column;
+    max-width: var(--max-width);
     margin: var(--space-2);
     gap: var(--space-2);
     padding: var(--space-2);
     border-radius: var(--radius-2);
-    box-shadow: var(--box-shadow);
   }
 
   button,
@@ -111,23 +123,35 @@
 
 @layer colors {
   body {
-    background-color: var(--color-green-1);
+    background-color: light-dark(var(--green-0), var(--green-9));
   }
 
   main {
     color: var(--ink-0);
-    background-color: var(--paper-0);
+    background-color: var(--paper-light);
   }
 
   button,
   input {
     color: var(--ink-0);
-    background-color: var(--paper-0);
-    border-color: var(--ink-1);
+    background-color: var(--paper-light);
+    border-color: var(--ink-3);
   }
 
-  *:focus-visible {
-    outline: var(--border-2) solid var(--ink-0);
+  button:hover,
+  input:hover {
+    border-color: var(--ink-0);
+  }
+
+  button:focus-visible,
+  input:focus-visible {
+    outline: var(--border-2) solid var(--ink-1);
+    outline-radius: var(--radius-1);
+  }
+
+  *::selection {
+    background-color: light-dark(var(--black), var(--white));
+    color: light-dark(var(--white), var(--black));
   }
 
   button:hover {
@@ -139,9 +163,9 @@
   }
 
   button.primary {
-    background-color: var(--paper-primary);
-    color: var(--ink-primary);
-    border-color: var(--paper-primary);
+    background-color: var(--green-4);
+    color: var(--green-9);
+    border-color: var(--green-6);
   }
 
   input[type='checkbox'] {
@@ -154,11 +178,16 @@
     button:not(:disabled),
     input[type='checkbox']:not(:disabled),
     input[type='radio']:not(:disabled),
+    label:has(input:not(:disabled):not(:checked)),
     .input-checkbox:has(input:not(:disabled)),
     .input-checkbox:has(input:not(:disabled)) > label,
     .input-text:has(input:not(:disabled)),
     .input-text:has(input:not(:disabled)) > label
   ):is(:hover) {
     cursor: pointer;
+  }
+
+  label {
+    user-select: none;
   }
 }

@@ -31,8 +31,6 @@ num-words {
           content: attr(value);
           display: block;
           text-align: center;
-          width: var(--space-3);
-          height: var(--space-3);
         }
       }
     }
