@@ -1,13 +1,19 @@
-import { subscribe } from '../state.js'
+import { dispatch, subscribe } from '../state.js'
 
 /** @typedef {import('../../types').FileInfo} FileInfo */
 
 class FilesList extends HTMLElement {
   list = document.createElement('ul')
-  button = document.createElement('choose-files')
+  chooseFilesButton = document.createElement('choose-files')
+  clearListButton = document.createElement('button')
 
   connectedCallback() {
-    const { button, list } = this
+    const { chooseFilesButton, clearListButton, list } = this
+
+    clearListButton.textContent = 'Clear'
+    clearListButton.addEventListener('click', () => {
+      dispatch({ type: 'CLEAR_INPUT_FILES' })
+    })
 
     subscribe('INPUT_FILES', (/** @type {FileInfo[]} */ files) => {
       list.replaceChildren()
@@ -18,7 +24,7 @@ class FilesList extends HTMLElement {
       }
     })
 
-    this.append(list, button)
+    this.append(list, chooseFilesButton, clearListButton)
   }
 }
 

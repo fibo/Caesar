@@ -1,4 +1,5 @@
 /**
+ * @typedef {import('../types').Action} Action
  * @typedef {import('../types').StateKey} StateKey
  */
 
@@ -28,6 +29,13 @@ export function publish(key, value) {
   state.set(key, value)
   // Notify subscribers.
   for (const callback of registry.get(key) ?? []) callback(value)
+}
+
+/** * @param {Action} action */
+export function dispatch(action) {
+  if (action.type === 'CLEAR_INPUT_FILES') {
+    publish('INPUT_FILES', [])
+  }
 }
 
 /**

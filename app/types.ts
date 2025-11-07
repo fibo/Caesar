@@ -35,6 +35,10 @@ export type StateKey =
 
 export type LocalStorageKey = Extract<StateKey, 'BIP39_NUM_WORDS'>
 
+export type Action = {
+  type: 'CLEAR_INPUT_FILES'
+}
+
 /** API exposed by Electron context bridge. */
 export type WindowElectron = {
   chooseFilesDialog: () => Promise<ChooseFileDialogResponse>
