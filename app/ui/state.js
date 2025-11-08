@@ -68,6 +68,22 @@ export async function dispatch(action) {
     publish('INPUT_FILES', [])
   }
 
+  if (action.type === 'FONT_LOADED') {
+    const initialized = state.get('INITIALIZED')
+    if (!initialized) {
+      state.set('INITIALIZED', true)
+      const splashScreen = document.getElementById('splash-screen')
+      const start = splashScreen.dataset.start
+      const now = performance.now()
+      const elapsed = now - Number(start)
+      const minSplashTime = 1000
+      const remaining = Math.max(0, minSplashTime - elapsed)
+      setTimeout(() => {
+        splashScreen?.remove()
+      }, remaining)
+    }
+  }
+
   if (action.type === 'GENERATE_BIP39_WORDS') {
     const numWords = /** @type {number} */ (state.get('BIP39_NUM_WORDS'))
     const passphrase = generatePassphrase(numWords)
@@ -124,6 +140,7 @@ export function subscribe(key, callback) {
 }
 
 export function initializeStateDefaults() {
+  publish('USE_BIP39', false)
   publish('BIP39_NUM_WORDS', 1)
   publish('CRYPT_DIRECTION', 'encrypt')
   publish('INPUT_FILES', [])

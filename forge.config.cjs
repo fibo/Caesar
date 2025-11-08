@@ -1,9 +1,12 @@
 const path = require('node:path')
+const { copyFile, mkdir } = require('node:fs/promises')
 const { MakerBase } = require('@electron-forge/maker-base')
 const { FusesPlugin } = require('@electron-forge/plugin-fuses')
 const { FuseV1Options, FuseVersion } = require('@electron/fuses')
 const { build } = require('app-builder-lib')
 const pkg = require('./package.json')
+
+const assetsDir = path.resolve(__dirname, 'assets')
 
 class NsisMaker extends MakerBase {
   name = 'nsis'
@@ -27,7 +30,7 @@ class NsisMaker extends MakerBase {
         directories: {
           output: path.resolve(dir, '..', 'make')
         },
-        icon: path.join(__dirname, 'assets', 'logos', 'Caesar.ico'),
+        icon: path.join(assetsDir, 'logos', 'Caesar.ico'),
         mac: {
           identity: null
         },
@@ -41,9 +44,37 @@ class NsisMaker extends MakerBase {
   }
 }
 
+async function copyAssets() {
+  const appAssetsDir = path.resolve(__dirname, 'app', 'ui', 'assets')
+
+  const videosAppDir = path.join(appAssetsDir, 'videos')
+
+  try {
+    await mkdir(videosAppDir, { recursive: true })
+  } catch (err) {
+    if (err.code !== 'EEXIST') throw err
+  }
+
+  for (const video of [
+    'ALEA_IACTA_EST-black.mp4',
+    'ALEA_IACTA_EST-white.mp4'
+  ]) {
+    await copyFile(
+      path.join(assetsDir, 'videos', video),
+      path.join(videosAppDir, video)
+    )
+  }
+}
+
 /** @type {import('@electron-forge/shared-types').ForgeConfig} */
 module.exports = {
   hooks: {
+    prePackage: async () => {
+      await copyAssets()
+    },
+    preStart: async () => {
+      await copyAssets()
+    },
     readPackageJson: async (_forgeConfig, packageJson) => {
       delete packageJson.author
       delete packageJson.keywords
@@ -62,19 +93,18 @@ module.exports = {
       config: {
         // Template image: node_modules/electron-installer-dmg/resources/mac/background.png
         background: path.join(
-          __dirname,
-          'assets',
+          assetsDir,
           'images',
           'dmg-installer-background.png'
         ),
-        icon: path.join(__dirname, 'assets', 'logos', 'Caesar.icns')
+        icon: path.join(assetsDir, 'logos', 'Caesar.icns')
       }
     }
   ],
   packagerConfig: {
     appCategoryType: 'public.app-category.utilities',
     asar: true,
-    icon: path.resolve(__dirname, 'assets', 'logos', 'Caesar'),
+    icon: path.resolve(assetsDir, 'logos', 'Caesar'),
     ignore: [
       /README\.md/,
       /\.editorconfig/,

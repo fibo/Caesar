@@ -1,4 +1,4 @@
-import { subscribe } from '../state.js'
+import { dispatch, subscribe } from '../state.js'
 
 /**
  * @typedef {import('../../types').Font} Font
@@ -46,6 +46,7 @@ class FontLoader extends HTMLElement {
       .then((font) => {
         document.fonts.add(font)
         document.body.style.fontFamily = font.family
+        dispatch({ type: 'FONT_LOADED' })
       })
       .catch((error) => {
         console.error(error)
