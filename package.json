@@ -1,6 +1,6 @@
 {
   "name": "Caesar",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "File encryption desktop app",
   "main": "app/main.cjs",

@@ -18,15 +18,6 @@ crypt-direction {
 
     &:has(input[type='radio']:checked) {
       background-color: var(--paper-light);
-      color: var(--ink-0);
-    }
-
-    &:has(input[type='radio']:not(:checked)) {
-      color: var(--ink-2);
-
-      &:hover {
-        color: var(--ink-0);
-      }
     }
   }
 }

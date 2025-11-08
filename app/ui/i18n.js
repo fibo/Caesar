@@ -1,4 +1,4 @@
-import { getState, publish } from './state.js'
+import { dispatch } from './state.js'
 
 /** @type {Language} */
 const defaultLanguage = 'en'
@@ -21,7 +21,6 @@ function detectLanguage() {
 }
 
 export function initializeLanguage() {
-  if (getState('LANGUAGE')) return
   const language = detectLanguage()
-  publish('LANGUAGE', language)
+  dispatch({ type: 'SET_LANGUAGE', language })
 }

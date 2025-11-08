@@ -3,6 +3,7 @@
  *
  * @remark As they are imports, they must be on top otherwise they are ignored.
  */
+@import url('./elements/action-buttons.css');
 @import url('./elements/crypt-direction.css');
 @import url('./elements/files-list.css');
 @import url('./elements/num-words.css');
@@ -16,25 +17,25 @@
   --black: #000;
   --white: #fff;
 
-  --green-0: hsl(140, 50%, 95%);
-  --green-1: hsl(140, 50%, 85%);
-  --green-2: hsl(140, 50%, 75%);
-  --green-3: hsl(140, 50%, 65%);
-  --green-4: hsl(140, 50%, 55%);
-  --green-5: hsl(140, 50%, 45%);
-  --green-6: hsl(140, 50%, 35%);
-  --green-7: hsl(140, 50%, 25%);
-  --green-8: hsl(140, 50%, 15%);
-  --green-9: hsl(140, 50%, 5%);
+  --green-0: hsl(140, 50%, 89%);
+  --green-1: hsl(140, 47%, 81%);
+  --green-2: hsl(140, 44%, 73%);
+  --green-3: hsl(140, 41%, 65%);
+  --green-4: hsl(140, 38%, 57%);
+  --green-5: hsl(140, 35%, 49%);
+  --green-6: hsl(140, 32%, 41%);
+  --green-7: hsl(140, 29%, 33%);
+  --green-8: hsl(140, 26%, 25%);
+  --green-9: hsl(140, 23%, 17%);
 
   --ink-0: light-dark(hsl(0, 0%, 5%), hsl(0, 0%, 95%));
   --ink-1: light-dark(hsl(0, 0%, 30%), hsl(0, 0%, 70%));
   --ink-2: light-dark(hsl(0, 0%, 55%), hsl(0, 0%, 45%));
   --ink-3: light-dark(hsl(0, 0%, 80%), hsl(0, 0%, 20%));
 
-  --paper-dark: light-dark(hsl(0, 0%, 90%), hsl(0, 0%, 0%));
-  --paper: light-dark(hsl(0, 0%, 95%), hsl(0, 0%, 5%));
-  --paper-light: light-dark(hsl(0, 0%, 100%), hsl(0, 0%, 10%));
+  --paper-dark: light-dark(hsl(20, 10%, 90%), hsl(0, 0%, 0%));
+  --paper: light-dark(hsl(20, 10%, 97%), hsl(0, 0%, 5%));
+  --paper-light: light-dark(hsl(20, 10%, 99%), hsl(0, 0%, 10%));
 
   /* Sizes */
 
@@ -50,7 +51,7 @@
   --radius-1: 8px;
   --radius-2: 16px;
 
-  --input-height: 48px;
+  --input-height: 40px;
 
   --max-width: 710px;
 }
@@ -74,8 +75,12 @@
 
 @layer typography {
   body {
-    /* font-family: is set by i18n-controller */
+    /* font-family: is set by font-loader */
     font-size: var(--font-size);
+  }
+
+  label {
+    text-wrap: nowrap;
   }
 }
 
@@ -88,6 +93,7 @@
   main {
     display: flex;
     flex-direction: column;
+    min-width: fit-content;
     max-width: var(--max-width);
     margin: var(--space-2);
     gap: var(--space-2);
@@ -100,6 +106,10 @@
     border: var(--border-1) solid;
     border-radius: var(--radius-1);
     height: var(--input-height);
+  }
+
+  button,
+  input[type='text'] {
     padding-inline: var(--space-2);
   }
 
@@ -154,22 +164,42 @@
     color: light-dark(var(--white), var(--black));
   }
 
-  button:hover {
-    filter: brightness(0.95);
-  }
-
   button:disabled {
-    filter: grayscale(80%);
+    background-color: var(--paper-dark);
+    color: var(--ink-2);
+    border-color: var(--ink-3);
   }
 
   button.primary {
     background-color: var(--green-4);
     color: var(--green-9);
     border-color: var(--green-6);
+
+    &:disabled {
+      background-color: var(--green-2);
+      color: var(--green-6);
+      border-color: var(--green-5);
+    }
   }
 
   input[type='checkbox'] {
     accent-color: var(--ink-0);
+  }
+
+  label {
+    color: var(--ink-1);
+
+    &:has(input:checked) {
+      color: var(--ink-0);
+    }
+
+    &:has(input:not(:checked)) {
+      color: var(--ink-2);
+
+      &:hover {
+        color: var(--ink-0);
+      }
+    }
   }
 }
 

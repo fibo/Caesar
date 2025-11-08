@@ -1,5 +1,32 @@
 files-list {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-1);
+  border-radius: var(--radius-1);
+
+  background-color: var(--paper);
+
   & ul {
     list-style-type: none;
+
+    &:has(li) {
+      margin-bottom: var(--space-2);
+    }
+
+    & li {
+      display: flex;
+      align-items: center;
+      padding-inline: var(--space-1);
+      margin-bottom: var(--space-1);
+      border-radius: var(--radius-1);
+      height: var(--input-height);
+
+      background-color: var(--paper-light);
+    }
+  }
+
+  & .actions {
+    display: flex;
+    gap: var(--space-1);
   }
 }

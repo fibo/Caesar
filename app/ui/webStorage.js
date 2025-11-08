@@ -1,4 +1,4 @@
-import { publish, subscribe } from './state.js'
+import { dispatch, subscribe } from './state.js'
 
 /**
  * @typedef {import('../types').LocalStorageKey} LocalStorageKey
@@ -28,11 +28,24 @@ function setLocalStorateItem(key, value) {
 }
 
 export function initializeStateFromLocalStorage() {
-  for (const key of /** @type LocalStorageKey[] */ (['BIP39_NUM_WORDS'])) {
-    // Read value from localStorage and publish to state.
+  for (const key of /** @type LocalStorageKey[] */ ([
+    'BIP39_NUM_WORDS',
+    'USE_BIP39'
+  ])) {
+    // Read value from localStorage and update state.
     const value = getLocalStorateItem(key)
     if (value !== undefined) {
-      publish(key, value)
+      if (key === 'BIP39_NUM_WORDS')
+        dispatch({
+          type: 'SET_BIP39_NUM_WORDS',
+          num: /** @type {number} */ (value)
+        })
+      if (key === 'USE_BIP39') {
+        dispatch({
+          type: 'SET_USE_BIP39',
+          value: /** @type {boolean} */ (value)
+        })
+      }
     }
     // Subscribe to state changes and write to localStorage.
     subscribe(key, (/** @type {unknown} */ value) => {

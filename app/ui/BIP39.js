@@ -1,5 +1,3 @@
-import { publish, getState } from './state.js'
-
 /**
  * BIP39 list of 2048 english words.
  *
@@ -2056,12 +2054,11 @@ const wordList = [
   'zoo'
 ]
 
-export function generatePassphrase() {
-  const numWords = getState('BIP39_NUM_WORDS')
+/** @param {number} numWords */
+export function generatePassphrase(numWords) {
   const randomWords = Array.from({ length: +numWords }, () => {
     const randIndex = Math.floor(Math.random() * wordList.length)
     return wordList[randIndex]
   })
-  const passphrase = randomWords.join('-')
-  publish('PASSPHRASE', passphrase)
+  return randomWords.join('-')
 }
