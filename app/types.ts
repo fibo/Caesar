@@ -31,6 +31,7 @@ export type ChooseFileDialogResponse =
 export type StateKey =
   | 'BIP39_NUM_WORDS'
   | 'CRYPT_DIRECTION'
+  | 'INITIALIZED'
   | 'INPUT_FILES'
   | 'LANGUAGE'
   | 'PASSPHRASE'
@@ -50,6 +51,9 @@ export type Action =
     }
   | {
       type: 'CREATE_OUTPUT_FILES'
+    }
+  | {
+      type: 'FONT_LOADED'
     }
   | {
       type: 'GENERATE_BIP39_WORDS'

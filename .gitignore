@@ -1,2 +1,5 @@
 node_modules/
 out/
+
+# copied from assets/videos
+app/ui/assets/videos/

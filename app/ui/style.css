@@ -17,16 +17,16 @@
   --black: #000;
   --white: #fff;
 
-  --green-0: hsl(140, 50%, 89%);
-  --green-1: hsl(140, 47%, 81%);
-  --green-2: hsl(140, 44%, 73%);
-  --green-3: hsl(140, 41%, 65%);
-  --green-4: hsl(140, 38%, 57%);
-  --green-5: hsl(140, 35%, 49%);
-  --green-6: hsl(140, 32%, 41%);
-  --green-7: hsl(140, 29%, 33%);
-  --green-8: hsl(140, 26%, 25%);
-  --green-9: hsl(140, 23%, 17%);
+  --green-0: hsl(140, 47%, 89%);
+  --green-1: hsl(140, 43%, 81%);
+  --green-2: hsl(140, 39%, 73%);
+  --green-3: hsl(140, 35%, 65%);
+  --green-4: hsl(140, 31%, 57%);
+  --green-5: hsl(140, 27%, 49%);
+  --green-6: hsl(140, 23%, 41%);
+  --green-7: hsl(140, 19%, 33%);
+  --green-8: hsl(140, 15%, 25%);
+  --green-9: hsl(140, 11%, 17%);
 
   --ink-0: light-dark(hsl(0, 0%, 5%), hsl(0, 0%, 95%));
   --ink-1: light-dark(hsl(0, 0%, 30%), hsl(0, 0%, 70%));
@@ -53,7 +53,7 @@
 
   --input-height: 40px;
 
-  --max-width: 710px;
+  --min-width: 500px;
 }
 
 @layer reset {
@@ -90,11 +90,18 @@
     height: 100%;
   }
 
+  #splash-screen {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background-color: light-dark(var(--white), var(--black));
+  }
+
   main {
     display: flex;
     flex-direction: column;
-    min-width: fit-content;
-    max-width: var(--max-width);
+    min-width: var(--min-width);
     margin: var(--space-2);
     gap: var(--space-2);
     padding: var(--space-2);

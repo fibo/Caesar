@@ -7,6 +7,7 @@ const DEVTOOLS = process.env.DEVTOOLS
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
+    minWidth: 520,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs')

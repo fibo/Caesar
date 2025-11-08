@@ -4,12 +4,17 @@
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
+      content="default-src 'self'; script-src 'self' 'sha256-sQZ1/D745Uy4ORbe05CdhplXF5bP2k8JkMtq/0pslGo=';"
     />
     <title>Caesar</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
+    <div id="splash-screen">
+      <video width="400" autoplay loop></video>
+    </div>
+
     <font-loader hidden>
       <main>
         <crypt-direction></crypt-direction>
@@ -19,6 +24,28 @@
       </main>
     </font-loader>
 
-    <script type="module" src="main.js"></script>
+    <script type="module">
+      // Save splash screen start time into a data attribute.
+      // It will be read later once the main app is initialized.
+      const splashScreen = document.getElementById('splash-screen')
+      const start = performance.now()
+      splashScreen.dataset.start = start
+
+      // Load video source based on color scheme.
+      const video = document.querySelector('#splash-screen video')
+      const source = document.createElement('source')
+      source.type = 'video/mp4'
+      source.setAttribute(
+        'src',
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'assets/videos/ALEA_IACTA_EST-black.mp4'
+          : 'assets/videos/ALEA_IACTA_EST-white.mp4'
+      )
+      video.appendChild(source)
+
+      // Import main.js dynamically
+      // otherwise it may block page rendering.
+      import('./main.js')
+    </script>
   </body>
 </html>
