@@ -3,28 +3,36 @@ import { dispatch, subscribe } from '../state.js'
 /** @typedef {import('../../types').FileInfo} FileInfo */
 
 class FilesList extends HTMLElement {
-  list = document.createElement('ul')
-  chooseFilesButton = document.createElement('choose-files')
-  clearListButton = document.createElement('button')
-
   connectedCallback() {
-    const { chooseFilesButton, clearListButton, list } = this
+    const list = document.createElement('ul')
+    const chooseFilesButton = document.createElement('choose-files')
+    const clearListButton = document.createElement('button')
 
-    clearListButton.textContent = 'Clear'
+    const actions = document.createElement('div')
+    actions.classList.add('actions')
+    actions.append(chooseFilesButton, clearListButton)
+
+    this.append(list, actions)
+
     clearListButton.addEventListener('click', () => {
       dispatch({ type: 'CLEAR_INPUT_FILES' })
     })
 
+    subscribe('LANGUAGE', (_language) => {
+      clearListButton.textContent = 'Clear'
+    })
+
     subscribe('INPUT_FILES', (/** @type {FileInfo[]} */ files) => {
+      clearListButton.hidden = files.length === 0
+
       list.replaceChildren()
+
       for (const file of files) {
         const item = document.createElement('li')
         item.textContent = file.name
         list.appendChild(item)
       }
     })
-
-    this.append(list, chooseFilesButton, clearListButton)
   }
 }
 

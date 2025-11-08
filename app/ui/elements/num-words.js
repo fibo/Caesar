@@ -1,41 +1,34 @@
-import { bip39MaxNumWords, publish, subscribe } from '../state.js'
+import { dispatch, subscribe } from '../state.js'
 
 class NumWords extends HTMLElement {
-  label = document.createElement('label')
-  /** @type {HTMLInputElement[]} */
-  selectors = []
-
   connectedCallback() {
-    const { label } = this
+    const maxNumWords = 10
+    const label = document.createElement('label')
+    /** @type {HTMLInputElement[]} */ const selectors = []
 
     label.textContent = 'Number of words'
     const selectorContainer = document.createElement('div')
     selectorContainer.classList.add('selector-container')
 
-    for (let i = 1; i <= bip39MaxNumWords; i++) {
+    for (let num = 1; num <= maxNumWords; num++) {
       const selector = document.createElement('input')
-      this.selectors.push(selector)
+      selectors.push(selector)
       selector.type = 'radio'
       selector.name = 'num-words'
-      selector.value = i.toString()
-      selector.addEventListener('change', this)
-      selectorContainer.appendChild(selector)
-    }
-
-    subscribe('BIP39_NUM_WORDS', (numWords) => {
-      this.selectors.forEach((selector) => {
-        selector.checked = selector.value === numWords.toString()
+      selector.value = num.toString()
+      selector.addEventListener('change', () => {
+        dispatch({ type: 'SET_BIP39_NUM_WORDS', num })
       })
-    })
+      selectorContainer.append(selector)
+    }
 
     this.append(label, selectorContainer)
-  }
 
-  /** @param {Event} event */
-  handleEvent(event) {
-    if (event.type === 'change' && event.target instanceof HTMLInputElement) {
-      publish('BIP39_NUM_WORDS', +event.target.value)
-    }
+    subscribe('BIP39_NUM_WORDS', (num) => {
+      selectors.forEach((selector) => {
+        selector.checked = selector.value == num
+      })
+    })
   }
 }
 

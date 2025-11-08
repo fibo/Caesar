@@ -1,50 +1,50 @@
-import { publish, subscribe } from '../state.js'
+import { dispatch, subscribe } from '../state.js'
 
 class CryptDirection extends HTMLElement {
-  encrypt = document.createElement('input')
-  decrypt = document.createElement('input')
-
   connectedCallback() {
-    const { encrypt, decrypt } = this
-
-    for (const input of [encrypt, decrypt]) {
-      input.type = 'radio'
-      input.name = 'crypt-direction'
-      input.addEventListener('change', this)
-    }
+    const encryptInput = document.createElement('input')
+    const decryptInput = document.createElement('input')
+    encryptInput.type = decryptInput.type = 'radio'
+    encryptInput.name = decryptInput.name = 'crypt-direction'
 
     const encryptLabel = document.createElement('label')
+    const encryptSpan = document.createElement('span')
+    encryptLabel.append(encryptSpan, encryptInput)
+
     const decryptLabel = document.createElement('label')
+    const decryptSpan = document.createElement('span')
+    decryptLabel.append(decryptSpan, decryptInput)
 
-    encryptLabel.textContent = 'Encrypt'
-    decryptLabel.textContent = 'Decrypt'
+    this.append(encryptLabel, decryptLabel)
 
-    encryptLabel.append(encrypt)
-    decryptLabel.append(decrypt)
+    encryptInput.addEventListener('change', () => {
+      dispatch({
+        type: 'SET_CRYPT_DIRECTION',
+        direction: 'encrypt'
+      })
+    })
+
+    decryptInput.addEventListener('change', () => {
+      dispatch({
+        type: 'SET_CRYPT_DIRECTION',
+        direction: 'decrypt'
+      })
+    })
 
     subscribe('CRYPT_DIRECTION', (direction) => {
       if (direction === 'encrypt') {
-        encrypt.setAttribute('checked', '')
-        decrypt.removeAttribute('checked')
+        encryptInput.setAttribute('checked', '')
+        decryptInput.removeAttribute('checked')
       } else if (direction === 'decrypt') {
-        decrypt.setAttribute('checked', '')
-        encrypt.removeAttribute('checked')
+        decryptInput.setAttribute('checked', '')
+        encryptInput.removeAttribute('checked')
       }
     })
 
-    this.append(encryptLabel, decryptLabel)
-  }
-
-  /** @param {Event} event */
-  handleEvent(event) {
-    if (event.type === 'change') {
-      if (event.target === this.encrypt) {
-        publish('CRYPT_DIRECTION', 'encrypt')
-      }
-      if (event.target === this.decrypt) {
-        publish('CRYPT_DIRECTION', 'decrypt')
-      }
-    }
+    subscribe('LANGUAGE', (_language) => {
+      encryptSpan.textContent = 'Encrypt'
+      decryptSpan.textContent = 'Decrypt'
+    })
   }
 }
 

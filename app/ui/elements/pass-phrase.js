@@ -1,109 +1,84 @@
-import { publish, subscribe, getState } from '../state.js'
-import { generatePassphrase } from '../bib39.js'
+import { dispatch, subscribe } from '../state.js'
 
 class PassPhrase extends HTMLElement {
-  generateButton = document.createElement('button')
-  passphraseInput = document.createElement('input')
-
-  bip39Checkbox = document.createElement('input')
-
-  bip39Container = document.createElement('div')
-  numWords = document.createElement('num-words')
-
   connectedCallback() {
-    const {
-      passphraseInput,
-      generateButton,
-      bip39Checkbox,
-      bip39Container,
-      numWords
-    } = this
+    const generateButton = document.createElement('button')
+    const passphraseInput = document.createElement('input')
+
+    const bip39Checkbox = document.createElement('input')
+
+    const numWords = document.createElement('num-words')
 
     const passphraseInputContainer = document.createElement('div')
     passphraseInputContainer.classList.add('input-text')
     const passphraseInputLabel = document.createElement('label')
-    passphraseInputLabel.textContent = 'Passphrase'
     passphraseInputLabel.htmlFor = passphraseInput.id = 'passphrase'
     passphraseInput.type = 'text'
+    passphraseInput.setAttribute('spellcheck', 'false')
     passphraseInputContainer.append(passphraseInputLabel, passphraseInput)
 
     const bip39CheckboxContainer = document.createElement('div')
     bip39CheckboxContainer.classList.add('input-checkbox')
     const bip39CheckboxLabel = document.createElement('label')
     bip39CheckboxLabel.htmlFor = bip39Checkbox.id = 'use-bip39'
-    bip39CheckboxLabel.textContent = 'Use BIP39 Passphrase'
     bip39Checkbox.type = 'checkbox'
     bip39CheckboxContainer.append(bip39Checkbox, bip39CheckboxLabel)
 
-    generateButton.textContent = 'Generate Passphrase'
+    this.append(
+      passphraseInputContainer,
+      bip39CheckboxContainer,
+      generateButton,
+      numWords
+    )
 
-    bip39Container.append(numWords, generateButton)
-    this.useBip39 = false
+    passphraseInput.addEventListener('blur', () => {
+      dispatch({ type: 'SET_PASSPHRASE', passphrase: passphraseInput.value })
+    })
 
-    passphraseInput.addEventListener('blur', this)
-    generateButton.addEventListener('click', this)
-    bip39Checkbox.addEventListener('input', this)
+    generateButton.addEventListener('click', () => {
+      dispatch({ type: 'GENERATE_BIP39_WORDS' })
+    })
+
+    bip39Checkbox.addEventListener('input', () => {
+      dispatch({ type: 'SET_USE_BIP39', value: bip39Checkbox.checked })
+    })
 
     subscribe('CRYPT_DIRECTION', (direction) => {
       if (direction === 'encrypt') {
         bip39Checkbox.hidden = false
         bip39CheckboxLabel.hidden = false
-        generateButton.hidden = false
-        numWords.hidden = false
+        if (bip39Checkbox.checked) {
+          generateButton.hidden = false
+          numWords.hidden = false
+          passphraseInput.readOnly = true
+        }
       }
       if (direction === 'decrypt') {
         bip39Checkbox.hidden = true
         bip39CheckboxLabel.hidden = true
         generateButton.hidden = true
         numWords.hidden = true
-        publish('PASSPHRASE', '')
+        passphraseInput.readOnly = false
       }
     })
 
-    subscribe('BIP39_NUM_WORDS', () => {
-      const direction = getState('CRYPT_DIRECTION')
-      if (direction !== 'encrypt') return
-      generatePassphrase()
+    subscribe('LANGUAGE', (_language) => {
+      passphraseInputLabel.textContent = 'Passphrase'
+      bip39CheckboxLabel.textContent = 'Use BIP39 Passphrase'
+      generateButton.textContent = 'Generate Passphrase'
     })
 
-    subscribe('PASSPHRASE', (passphrase) => {
-      if (typeof passphrase !== 'string') return
-      this.passphraseInput.value = passphrase
+    subscribe('PASSPHRASE', (/** @type {string} */ passphrase) => {
+      passphraseInput.value = passphrase
     })
 
-    this.append(
-      passphraseInputContainer,
-      bip39CheckboxContainer,
-      bip39Container
-    )
-  }
+    subscribe('USE_BIP39', (/** @type {boolean} */ value) => {
+      bip39Checkbox.checked = value
+      passphraseInput.readOnly = value
 
-  /** @param {Event} event */
-  handleEvent(event) {
-    if (event.type === 'blur' && event.target === this.passphraseInput) {
-      const passphrase = this.passphraseInput.value
-      publish('PASSPHRASE', passphrase)
-    }
-
-    if (event.type === 'click' && event.target === this.generateButton) {
-      generatePassphrase()
-    }
-
-    if (event.type === 'input' && event.target === this.bip39Checkbox) {
-      const checkbox = /** @type {HTMLInputElement} */ (event.target)
-      this.useBip39 = checkbox.checked
-    }
-  }
-
-  /** @param {boolean} value */
-  set useBip39(value) {
-    this.bip39Container.hidden = !value
-    if (value) {
-      generatePassphrase()
-    } else {
-      this.passphraseInput.value = ''
-      publish('PASSPHRASE', '')
-    }
+      numWords.hidden = !value
+      generateButton.hidden = !value
+    })
   }
 }
 

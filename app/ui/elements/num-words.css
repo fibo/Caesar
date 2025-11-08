@@ -3,13 +3,11 @@ num-words {
   flex-direction: row;
   align-items: center;
   gap: var(--space-2);
+  flex-wrap: wrap;
+  min-width: fit-content;
 
   &[hidden] {
     display: none;
-  }
-
-  & label {
-    line-height: 3;
   }
 
   & .selector-container {
@@ -19,8 +17,6 @@ num-words {
 
     & input[type='radio'] {
       appearance: none;
-      margin: 0;
-      padding: 0;
       width: var(--space-3);
       height: var(--space-3);
       border-radius: var(--radius-1);
