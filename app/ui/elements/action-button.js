@@ -1,16 +1,13 @@
 import { dispatch, subscribe } from '../state.js'
 
 /**
+ * @typedef {import('../../types').CryptDirection} CryptDirection
  * @typedef {import('../../types').FileInfo} FileInfo
+ * @typedef {import('../../types').Language} Language
  */
 
-class ActionButtons extends HTMLElement {
+class ActionButton extends HTMLElement {
   button = document.createElement('button')
-
-  /** @type {boolean | undefined} */
-  hasInputFiles
-  /** @type {boolean | undefined} */
-  hasPassphrase
 
   connectedCallback() {
     const { button } = this
@@ -24,13 +21,9 @@ class ActionButtons extends HTMLElement {
       dispatch({ type: 'CREATE_OUTPUT_FILES' })
     })
 
-    subscribe('CRYPT_DIRECTION', (value) => {
-      if (value === 'encrypt') {
-        button.textContent = 'Encrypt Files'
-      }
-      if (value === 'decrypt') {
-        button.textContent = 'Decrypt Files'
-      }
+    subscribe('CRYPT_DIRECTION', (/** @type {CryptDirection} */ value) => {
+      this.cryptDirection = value
+      this.updateTranslations()
     })
 
     subscribe('PASSPHRASE', (/** @type {string} */ passphrase) => {
@@ -42,11 +35,29 @@ class ActionButtons extends HTMLElement {
       this.hasInputFiles = files.length > 0
       this.setButtonState()
     })
+
+    subscribe('LANGUAGE', (/** @type {Language} */ language) => {
+      this.language = language
+      this.updateTranslations()
+    })
   }
 
   setButtonState() {
     this.button.disabled = !(this.hasInputFiles && this.hasPassphrase)
   }
+
+  updateTranslations() {
+    const { button, cryptDirection, language } = this
+    if (!language) return
+    if (!cryptDirection) return
+
+    if (cryptDirection === 'encrypt') {
+      button.textContent = 'Encrypt Files'
+    }
+    if (cryptDirection === 'decrypt') {
+      button.textContent = 'Decrypt Files'
+    }
+  }
 }
 
-customElements.define('action-buttons', ActionButtons)
+customElements.define('action-button', ActionButton)

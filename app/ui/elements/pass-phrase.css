@@ -6,5 +6,5 @@ pass-phrase {
   min-width: fit-content;
   border-radius: var(--radius-1);
 
-  background-color: var(--paper);
+  background-color: var(--paper-dark);
 }

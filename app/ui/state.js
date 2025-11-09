@@ -39,7 +39,13 @@ export async function dispatch(action) {
     if (result.status === 'success') {
       const inputFiles =
         /** @type {FileInfo[]} */ (state.get('INPUT_FILES')) || []
-      publish('INPUT_FILES', [...inputFiles, ...result.data])
+      /** @type {FileInfo[]} */ const choosenFiles = []
+      for (const file of result.data) {
+        // Avoid duplicates. If file is already in the INPUT_FILES list, skip it.
+        if (inputFiles.find((item) => item.id === file.id)) continue
+        choosenFiles.push(file)
+      }
+      publish('INPUT_FILES', [...inputFiles, ...choosenFiles])
     }
   }
 
@@ -73,27 +79,25 @@ export async function dispatch(action) {
     if (!initialized) {
       state.set('INITIALIZED', true)
       const splashScreen = document.getElementById('splash-screen')
-      const start = splashScreen.dataset.start
-      const now = performance.now()
-      const elapsed = now - Number(start)
-      const minSplashTime = 1000
-      const remaining = Math.max(0, minSplashTime - elapsed)
-      setTimeout(() => {
-        splashScreen?.remove()
-      }, remaining)
+      const start = +splashScreen.dataset.start
+      const minSplashTime = 1771 + Math.floor(Math.random() * 1771)
+      setTimeout(
+        () => {
+          splashScreen.remove()
+        },
+        Math.max(0, minSplashTime - (performance.now() - start))
+      )
     }
   }
 
   if (action.type === 'GENERATE_BIP39_WORDS') {
     const numWords = /** @type {number} */ (state.get('BIP39_NUM_WORDS'))
-    const passphrase = generatePassphrase(numWords)
-    publish('PASSPHRASE', passphrase)
+    publish('PASSPHRASE', generatePassphrase(numWords))
   }
 
   if (action.type === 'SET_BIP39_NUM_WORDS') {
     publish('BIP39_NUM_WORDS', action.num)
-    const useBip39 = /** @type {boolean} */ (state.get('USE_BIP39'))
-    if (useBip39) {
+    if (state.get('USE_BIP39')) {
       dispatch({ type: 'GENERATE_BIP39_WORDS' })
     }
   }
@@ -109,6 +113,10 @@ export async function dispatch(action) {
 
   if (action.type === 'SET_LANGUAGE') {
     publish('LANGUAGE', action.language)
+  }
+
+  if (action.type === 'SET_PASSPHRASE') {
+    publish('PASSPHRASE', action.passphrase)
   }
 
   if (action.type === 'SET_USE_BIP39') {

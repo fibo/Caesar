@@ -1,9 +1,12 @@
 crypt-direction {
+  --border: var(--border-3);
+  --border-radius: var(--radius-2);
+
   display: flex;
   flex-direction: row;
   background-color: var(--paper-dark);
-  padding: var(--border-2);
-  border-radius: var(--radius-2);
+  padding: var(--border);
+  border-radius: calc(var(--border) + var(--border-radius));
 
   & input[type='radio'] {
     display: none;
@@ -13,7 +16,7 @@ crypt-direction {
     flex-grow: 1;
     display: inline-block;
     text-align: center;
-    border-radius: var(--radius-2);
+    border-radius: var(--border-radius);
     padding: var(--space-1);
 
     &:has(input[type='radio']:checked) {

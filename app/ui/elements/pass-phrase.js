@@ -1,25 +1,40 @@
 import { dispatch, subscribe } from '../state.js'
 
+/**
+ * @typedef {import('../../types').Language} Language
+ */
+
 class PassPhrase extends HTMLElement {
+  generateButton = document.createElement('button')
+  passphraseInput = document.createElement('input')
+  passphraseInputContainer = document.createElement('div')
+  passphraseInputLabel = document.createElement('label')
+
+  bip39Checkbox = document.createElement('input')
+  bip39CheckboxContainer = document.createElement('div')
+  bip39CheckboxLabel = document.createElement('label')
+
+  numWords = document.createElement('num-words')
+
   connectedCallback() {
-    const generateButton = document.createElement('button')
-    const passphraseInput = document.createElement('input')
+    const {
+      generateButton,
+      passphraseInput,
+      passphraseInputContainer,
+      passphraseInputLabel,
+      bip39Checkbox,
+      bip39CheckboxContainer,
+      bip39CheckboxLabel,
+      numWords
+    } = this
 
-    const bip39Checkbox = document.createElement('input')
-
-    const numWords = document.createElement('num-words')
-
-    const passphraseInputContainer = document.createElement('div')
     passphraseInputContainer.classList.add('input-text')
-    const passphraseInputLabel = document.createElement('label')
     passphraseInputLabel.htmlFor = passphraseInput.id = 'passphrase'
     passphraseInput.type = 'text'
     passphraseInput.setAttribute('spellcheck', 'false')
     passphraseInputContainer.append(passphraseInputLabel, passphraseInput)
 
-    const bip39CheckboxContainer = document.createElement('div')
     bip39CheckboxContainer.classList.add('input-checkbox')
-    const bip39CheckboxLabel = document.createElement('label')
     bip39CheckboxLabel.htmlFor = bip39Checkbox.id = 'use-bip39'
     bip39Checkbox.type = 'checkbox'
     bip39CheckboxContainer.append(bip39Checkbox, bip39CheckboxLabel)
@@ -27,8 +42,8 @@ class PassPhrase extends HTMLElement {
     this.append(
       passphraseInputContainer,
       bip39CheckboxContainer,
-      generateButton,
-      numWords
+      numWords,
+      generateButton
     )
 
     passphraseInput.addEventListener('blur', () => {
@@ -62,10 +77,9 @@ class PassPhrase extends HTMLElement {
       }
     })
 
-    subscribe('LANGUAGE', (_language) => {
-      passphraseInputLabel.textContent = 'Passphrase'
-      bip39CheckboxLabel.textContent = 'Use BIP39 Passphrase'
-      generateButton.textContent = 'Generate Passphrase'
+    subscribe('LANGUAGE', (/** @type {Language} */ language) => {
+      this.language = language
+      this.updateTranslations()
     })
 
     subscribe('PASSPHRASE', (/** @type {string} */ passphrase) => {
@@ -74,11 +88,31 @@ class PassPhrase extends HTMLElement {
 
     subscribe('USE_BIP39', (/** @type {boolean} */ value) => {
       bip39Checkbox.checked = value
+      // Need to set attribute for CSS :checked selector
+      if (value) {
+        bip39Checkbox.setAttribute('checked', '')
+      } else {
+        bip39Checkbox.removeAttribute('checked')
+      }
+
       passphraseInput.readOnly = value
 
       numWords.hidden = !value
       generateButton.hidden = !value
     })
+  }
+
+  updateTranslations() {
+    const {
+      language,
+      passphraseInputLabel,
+      generateButton,
+      bip39CheckboxLabel
+    } = this
+    if (!language) return
+    passphraseInputLabel.textContent = 'Passphrase'
+    bip39CheckboxLabel.textContent = 'Use BIP39 Passphrase'
+    generateButton.textContent = 'Generate Passphrase'
   }
 }
 

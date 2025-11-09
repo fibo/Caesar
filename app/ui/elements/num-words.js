@@ -1,13 +1,20 @@
 import { dispatch, subscribe } from '../state.js'
 
-class NumWords extends HTMLElement {
-  connectedCallback() {
-    const maxNumWords = 10
-    const label = document.createElement('label')
-    /** @type {HTMLInputElement[]} */ const selectors = []
+/**
+ * @typedef {import('../../types').Language} Language
+ */
 
-    label.textContent = 'Number of words'
-    const selectorContainer = document.createElement('div')
+class NumWords extends HTMLElement {
+  maxNumWords = 10
+
+  label = document.createElement('label')
+  selectorContainer = document.createElement('div')
+
+  /** @type {HTMLInputElement[]} */ selectors = []
+
+  connectedCallback() {
+    const { maxNumWords, label, selectorContainer, selectors } = this
+
     selectorContainer.classList.add('selector-container')
 
     for (let num = 1; num <= maxNumWords; num++) {
@@ -29,6 +36,18 @@ class NumWords extends HTMLElement {
         selector.checked = selector.value == num
       })
     })
+
+    subscribe('LANGUAGE', (/** @type {Language} */ language) => {
+      this.language = language
+      this.updateTranslations()
+    })
+  }
+
+  updateTranslations() {
+    const { language, label } = this
+    if (!language) return
+
+    label.textContent = 'Number of words'
   }
 }
 
