@@ -94,7 +94,7 @@ hdiutil detach /Volumes/Caesar
 
 ### How to create Apple .icns file
 
-Prepare a _.iconset_ folder like [Caesar.iconset](../assets/logos/Caesar.iconset) according to Apple specification, with the following files:
+Prepare a _.iconset_ folder like [Caesar.iconset](../app/ui/assets/logos/Caesar.iconset) according to Apple specification, with the following files:
 
     icon_128x128.png
     icon_128x128@2x.png
@@ -110,15 +110,7 @@ Prepare a _.iconset_ folder like [Caesar.iconset](../assets/logos/Caesar.iconset
 Then on a Mac run a command like the following to create the _Caesar.icns_ file:
 
 ```shell
-cd assets/logos/
+cd app/ui/assets/logos/
 iconutil -c icns Caesar.iconset
-```
-
-### How to create animated GIF loader
-
-Animated GIF *assets/videos/ALEA_IACTA_EST.gif* was created with command
-
-```shell
-ffmpeg -i assets/videos/ALEA_IACTA_EST-black.mp4 -vf "fps=20,scale=280:-1:flags=lanczos" assets/videos/ALEA_IACTA_EST.gif
 ```
 
