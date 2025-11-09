@@ -1,4 +1,4 @@
-<img alt="Caesar logo" src="assets/logos/Caesar.svg" width="120" height="120">
+<img alt="Caesar logo" src="app/ui/assets/logos/Caesar.svg" width="120" height="120">
 
 # Ceasar
 
