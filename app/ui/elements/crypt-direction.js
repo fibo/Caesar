@@ -1,18 +1,33 @@
 import { dispatch, subscribe } from '../state.js'
 
+/**
+ * @typedef {import('../../types').Language} Language
+ */
+
 class CryptDirection extends HTMLElement {
+  encryptInput = document.createElement('input')
+  encryptLabel = document.createElement('label')
+  encryptSpan = document.createElement('span')
+
+  decryptInput = document.createElement('input')
+  decryptLabel = document.createElement('label')
+  decryptSpan = document.createElement('span')
+
   connectedCallback() {
-    const encryptInput = document.createElement('input')
-    const decryptInput = document.createElement('input')
+    const {
+      encryptInput,
+      encryptLabel,
+      encryptSpan,
+      decryptInput,
+      decryptLabel,
+      decryptSpan
+    } = this
+
     encryptInput.type = decryptInput.type = 'radio'
     encryptInput.name = decryptInput.name = 'crypt-direction'
 
-    const encryptLabel = document.createElement('label')
-    const encryptSpan = document.createElement('span')
     encryptLabel.append(encryptSpan, encryptInput)
 
-    const decryptLabel = document.createElement('label')
-    const decryptSpan = document.createElement('span')
     decryptLabel.append(decryptSpan, decryptInput)
 
     this.append(encryptLabel, decryptLabel)
@@ -41,10 +56,18 @@ class CryptDirection extends HTMLElement {
       }
     })
 
-    subscribe('LANGUAGE', (_language) => {
-      encryptSpan.textContent = 'Encrypt'
-      decryptSpan.textContent = 'Decrypt'
+    subscribe('LANGUAGE', (language) => {
+      this.language = language
+      this.updateTranslations()
     })
+  }
+
+  updateTranslations() {
+    const { language, encryptSpan, decryptSpan } = this
+    if (!language) return
+
+    encryptSpan.textContent = 'Encrypt'
+    decryptSpan.textContent = 'Decrypt'
   }
 }
 
