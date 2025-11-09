@@ -1,5 +1,4 @@
 const path = require('node:path')
-const { copyFile, mkdir } = require('node:fs/promises')
 const { MakerBase } = require('@electron-forge/maker-base')
 const { FusesPlugin } = require('@electron-forge/plugin-fuses')
 const { FuseV1Options, FuseVersion } = require('@electron/fuses')
@@ -44,37 +43,9 @@ class NsisMaker extends MakerBase {
   }
 }
 
-async function copyAssets() {
-  const appAssetsDir = path.resolve(__dirname, 'app', 'ui', 'assets')
-
-  const videosAppDir = path.join(appAssetsDir, 'videos')
-
-  try {
-    await mkdir(videosAppDir, { recursive: true })
-  } catch (err) {
-    if (err.code !== 'EEXIST') throw err
-  }
-
-  for (const video of [
-    'ALEA_IACTA_EST-black.mp4',
-    'ALEA_IACTA_EST-white.mp4'
-  ]) {
-    await copyFile(
-      path.join(assetsDir, 'videos', video),
-      path.join(videosAppDir, video)
-    )
-  }
-}
-
 /** @type {import('@electron-forge/shared-types').ForgeConfig} */
 module.exports = {
   hooks: {
-    prePackage: async () => {
-      await copyAssets()
-    },
-    preStart: async () => {
-      await copyAssets()
-    },
     readPackageJson: async (_forgeConfig, packageJson) => {
       delete packageJson.author
       delete packageJson.keywords
@@ -113,9 +84,9 @@ module.exports = {
       /\.lefthook\.yml/,
       /\.npmrc/,
       /\.prettierrc/,
-      /assets\/images\/dmg-installer-background\.png/,
-      /assets\/logos\//,
-      /assets\/videos\//,
+      /app\/ui\/assets\/images\/dmg-installer-background\.png/,
+      /app\/ui\/assets\/logos\//,
+      /app\/ui\/assets\/videos\/ALEA_IACTA_EST.gif/,
       /forge\.config\.cjs/,
       /tsconfig\.json/
     ],
