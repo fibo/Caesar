@@ -86,7 +86,6 @@ module.exports = {
       /\.prettierrc/,
       /app\/ui\/assets\/images\/dmg-installer-background\.png/,
       /app\/ui\/assets\/logos\//,
-      /app\/ui\/assets\/videos\/ALEA_IACTA_EST.gif/,
       /forge\.config\.cjs/,
       /tsconfig\.json/
     ],
