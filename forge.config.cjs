@@ -5,7 +5,7 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses')
 const { build } = require('app-builder-lib')
 const pkg = require('./package.json')
 
-const assetsDir = path.resolve(__dirname, 'assets')
+const assetsDir = path.resolve(__dirname, 'app', 'ui', 'assets')
 
 class NsisMaker extends MakerBase {
   name = 'nsis'
