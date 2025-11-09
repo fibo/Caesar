@@ -2,14 +2,14 @@
 
 # Ceasar
 
-_Caesar_ is a cross-platform desktop app that uses the
-[age file encryption format](https://github.com/FiloSottile/age) to encrypt/decrypt files.
+_Caesar_ is a desktop app that uses the [age file encryption format](https://github.com/FiloSottile/age) to encrypt/decrypt files.
+
+Download the latest version from the [releases page](https://github.com/fibo/Caesar/releases).
+
+It __never connects to the Internet__ by design. Automatic updates are not implemented.
 
 It has no dependency other than [typage](https://github.com/FiloSottile/typage)
 which is an official TypeScript implementation of _age file encryption format_.
-
-It __never connects to the Internet__ by design,
-automatic updates are not implemented.
 
 [Gaius Iulius Caesar](https://en.wikipedia.org/wiki/Julius_Caesar) on the 58 B.C. used one of the oldest encryption techniques of which we have records: the Caesar cipher.
 
