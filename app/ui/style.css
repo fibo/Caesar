@@ -95,8 +95,8 @@
     height: 100%;
   }
 
-  /* Hide scrollbars, in particular on Windows */
   body {
+    /* Hide scrollbars, in particular on Windows */
     overflow: hidden;
   }
 
@@ -154,6 +154,11 @@
     background-color: light-dark(var(--green-1), var(--green-8));
   }
 
+  *::selection {
+    background-color: light-dark(var(--green-0), var(--green-9));
+    color: light-dark(var(--green-9), var(--green-0));
+  }
+
   #splash-screen {
     background-color: light-dark(var(--white), var(--black));
   }
@@ -168,38 +173,40 @@
     color: var(--ink-0);
     background-color: var(--paper-light);
     border-color: var(--ink-3);
+
+    &:hover {
+      border-color: var(--ink-0);
+    }
+
+    &:focus-visible {
+      outline: var(--border-2) solid var(--ink-1);
+      outline-radius: var(--radius-1);
+    }
   }
 
-  button:hover,
-  input:hover {
-    border-color: var(--ink-0);
-  }
+  button {
+    &:disabled {
+      background-color: var(--paper-dark);
+      color: var(--ink-2);
+      border-color: var(--ink-3);
+    }
 
-  button:focus-visible,
-  input:focus-visible {
-    outline: var(--border-2) solid var(--ink-1);
-    outline-radius: var(--radius-1);
-  }
-
-  *::selection {
-    background-color: light-dark(var(--green-0), var(--green-9));
-    color: light-dark(var(--green-9), var(--green-0));
-  }
-
-  button:disabled {
-    background-color: var(--paper-dark);
-    color: var(--ink-2);
-    border-color: var(--ink-3);
-  }
-
-  button.primary:not(:disabled) {
-    background-color: light-dark(var(--green-1), var(--green-8));
-    color: light-dark(var(--green-8), var(--green-1));
-    border-color: light-dark(var(--green-6), var(--green-4));
+    &.primary:not(:disabled) {
+      background-color: light-dark(var(--green-1), var(--green-8));
+      color: light-dark(var(--green-8), var(--green-1));
+      border-color: light-dark(var(--green-6), var(--green-4));
+    }
   }
 
   input[type='checkbox'] {
     accent-color: var(--ink-0);
+  }
+
+  input[type='text'] {
+    &:read-only {
+      background-color: var(--paper);
+      cursor: default;
+    }
   }
 
   label {
