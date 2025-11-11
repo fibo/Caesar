@@ -28,14 +28,17 @@ export type ChooseFileDialogResponse =
       status: 'canceled'
     }
 
-export type StateKey =
-  | 'BIP39_NUM_WORDS'
-  | 'CRYPT_DIRECTION'
-  | 'INITIALIZED'
-  | 'INPUT_FILES'
-  | 'LANGUAGE'
-  | 'PASSPHRASE'
-  | 'USE_BIP39'
+export type State = {
+  BIP39_NUM_WORDS: number
+  CRYPT_DIRECTION: CryptDirection
+  INITIALIZED: boolean
+  INPUT_FILES: FileInfo[]
+  LANGUAGE: Language
+  PASSPHRASE: string
+  USE_BIP39: boolean
+}
+
+export type StateKey = keyof State
 
 export type LocalStorageKey = Extract<StateKey, 'BIP39_NUM_WORDS' | 'USE_BIP39'>
 
