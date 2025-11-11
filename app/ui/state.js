@@ -4,22 +4,34 @@ import { generatePassphrase } from './BIP39.js'
  * @typedef {import('../types').Action} Action
  * @typedef {import('../types').CryptDirection} CryptDirection
  * @typedef {import('../types').FileInfo} FileInfo
+ * @typedef {import('../types').State} State
  * @typedef {import('../types').StateKey} StateKey
  */
 
 /**
  * App state
  *
- * @type {Map<StateKey, unknown>}
+ * @type {Map<StateKey>}
  */
 const state = new Map()
+
+/**
+ * Get a copy of the state value for the given key.
+ *
+ * @template Key
+ * @param {Key extends StateKey ? Key : never} key
+ * @returns {State[Key]}
+ */
+const getState = (key) =>
+  // Use structuredClone to avoid unexpected state mutations.
+  structuredClone(state.get(key))
 
 /** Registry of subscribers. */
 const registry = new Map()
 
 /**
  * @param {StateKey} key
- * @param {unknown} value
+ * @param {State[StateKey]} value
  */
 function publish(key, value) {
   // Update state.
@@ -28,24 +40,25 @@ function publish(key, value) {
   for (const callback of registry.get(key) ?? []) callback(value)
 }
 
-/** * @param {Action} action */
+/**
+ * @param {Action} action
+ */
 export async function dispatch(action) {
   if (action.type === 'CHOOSE_INPUT_FILES') {
     const result = await window.electron.chooseFilesDialog()
     if (result.status === 'canceled') return
-    if (result.status === 'error') {
-      console.error(result.error)
-    }
+    if (result.status === 'error') console.error(result.error)
     if (result.status === 'success') {
-      const inputFiles =
-        /** @type {FileInfo[]} */ (state.get('INPUT_FILES')) || []
-      /** @type {FileInfo[]} */ const choosenFiles = []
-      for (const file of result.data) {
-        // Avoid duplicates. If file is already in the INPUT_FILES list, skip it.
-        if (inputFiles.find((item) => item.id === file.id)) continue
-        choosenFiles.push(file)
-      }
-      publish('INPUT_FILES', [...inputFiles, ...choosenFiles])
+      const inputFiles = getState('INPUT_FILES')
+      // Avoid duplicates.
+      for (const file of result.data)
+        if (inputFiles.find((item) => item.id === file.id)) {
+          // If file is already in the INPUT_FILES list, skip it.
+          continue
+        } else {
+          inputFiles.push(file)
+        }
+      publish('INPUT_FILES', inputFiles)
     }
   }
 
@@ -58,13 +71,11 @@ export async function dispatch(action) {
   }
 
   if (action.type === 'CREATE_OUTPUT_FILES') {
-    const passphrase = /** @type {string} */ (state.get('PASSPHRASE'))
+    const passphrase = getState('PASSPHRASE')
     if (!passphrase) return
-    const files = /** @type {FileInfo[]} */ (state.get('INPUT_FILES'))
+    const files = getState('INPUT_FILES')
     if (files.length === 0) return
-    const direction = /** @type {CryptDirection} */ (
-      state.get('CRYPT_DIRECTION')
-    )
+    const direction = getState('CRYPT_DIRECTION')
     if (direction === 'encrypt') {
       window.electron.encryptWithPassphrase(passphrase, files)
     }
@@ -75,9 +86,11 @@ export async function dispatch(action) {
   }
 
   if (action.type === 'FONT_LOADED') {
-    const initialized = state.get('INITIALIZED')
+    const initialized = getState('INITIALIZED')
     if (!initialized) {
-      state.set('INITIALIZED', true)
+      publish('INITIALIZED', true)
+
+      // Remove splash screen.
       const splashScreen = document.getElementById('splash-screen')
       const start = +splashScreen.dataset.start
       const minSplashTime = 1771 + Math.floor(Math.random() * 1771)
@@ -91,13 +104,13 @@ export async function dispatch(action) {
   }
 
   if (action.type === 'GENERATE_BIP39_WORDS') {
-    const numWords = /** @type {number} */ (state.get('BIP39_NUM_WORDS'))
+    const numWords = getState('BIP39_NUM_WORDS')
     publish('PASSPHRASE', generatePassphrase(numWords))
   }
 
   if (action.type === 'SET_BIP39_NUM_WORDS') {
     publish('BIP39_NUM_WORDS', action.num)
-    if (state.get('USE_BIP39')) {
+    if (getState('USE_BIP39')) {
       dispatch({ type: 'GENERATE_BIP39_WORDS' })
     }
   }
@@ -106,7 +119,7 @@ export async function dispatch(action) {
     publish('CRYPT_DIRECTION', action.direction)
     publish('INPUT_FILES', '')
     if (action.direction === 'encrypt') {
-      if (state.get('USE_BIP39') && !state.get('PASSPHRASE'))
+      if (getState('USE_BIP39') && !getState('PASSPHRASE'))
         dispatch({ type: 'GENERATE_BIP39_WORDS' })
     }
   }
@@ -139,7 +152,7 @@ export function subscribe(key, callback) {
   if (subscribers) subscribers.add(callback)
   else registry.set(key, new Set([callback]))
   // Send current state to the new subscriber.
-  if (state.has(key)) callback(state.get(key))
+  if (state.has(key)) callback(getState(key))
   // Return unsubscribe function.
   return function unsubscribe() {
     const subscribers = registry.get(key)
