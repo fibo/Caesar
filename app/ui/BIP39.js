@@ -3,7 +3,7 @@
  *
  * @see {@link https://github.com/FiloSottile/age/blob/main/cmd/age/wordlist.go}
  */
-const wordList = [
+export const wordList = [
   'abandon',
   'ability',
   'able',
@@ -2053,12 +2053,3 @@ const wordList = [
   'zone',
   'zoo'
 ]
-
-/** @param {number} numWords */
-export function generatePassphrase(numWords) {
-  const randomWords = Array.from({ length: +numWords }, () => {
-    const randIndex = Math.floor(Math.random() * wordList.length)
-    return wordList[randIndex]
-  })
-  return randomWords.join('-')
-}

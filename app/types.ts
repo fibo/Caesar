@@ -82,6 +82,10 @@ export type Action =
       value: boolean
     }
 
+export type Reducer = (
+  action: Action
+) => Promise<Partial<State>> | Partial<State>
+
 export type WebStorageActionMapper = {
   key: LocalStorageKey
   /**
