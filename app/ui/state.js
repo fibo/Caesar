@@ -144,7 +144,7 @@ export async function dispatch(action) {
 
 /**
  * @param {StateKey} key
- * @param {(value: unknown) => void} callback
+ * @param {(value: State[StateKey]) => void} callback
  */
 export function subscribe(key, callback) {
   // Register the subscriber.

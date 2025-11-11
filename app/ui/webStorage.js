@@ -1,55 +1,45 @@
 import { dispatch, subscribe } from './state.js'
 
 /**
+ * @typedef {import('../types').Action} Action
  * @typedef {import('../types').LocalStorageKey} LocalStorageKey
+ * @typedef {import('../types').JsonValue} JsonValue
+ * @typedef {import('../types').WebStorageActionMapper} WebStorageActionMapper
  */
 
-/**
- * @param {LocalStorageKey} key
- * @return {unknown}
- */
-function getLocalStorateItem(key) {
-  const value = localStorage.getItem(key)
-  if (!value) return
-  try {
-    return JSON.parse(value)
-  } catch (error) {
-    console.error(error)
-    return
+const actionMappers = /** @type {WebStorageActionMapper[]} */ ([
+  {
+    key: 'BIP39_NUM_WORDS',
+    action: (data) => ({ type: 'SET_BIP39_NUM_WORDS', num: data })
+  },
+  {
+    key: 'USE_BIP39',
+    action: (data) => ({ type: 'SET_USE_BIP39', value: data })
   }
-}
-
-/**
- * @param {LocalStorageKey} key
- * @param {unknown} value
- */
-function setLocalStorateItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value))
-}
+])
 
 export function initializeStateFromLocalStorage() {
-  for (const key of /** @type LocalStorageKey[] */ ([
-    'BIP39_NUM_WORDS',
-    'USE_BIP39'
-  ])) {
+  for (const { key, action } of actionMappers) {
     // Read value from localStorage and update state.
-    const value = getLocalStorateItem(key)
+    const value = localStorage.getItem(key)
     if (value !== undefined) {
-      if (key === 'BIP39_NUM_WORDS')
-        dispatch({
-          type: 'SET_BIP39_NUM_WORDS',
-          num: /** @type {number} */ (value)
-        })
-      if (key === 'USE_BIP39') {
-        dispatch({
-          type: 'SET_USE_BIP39',
-          value: /** @type {boolean} */ (value)
-        })
+      try {
+        const data = /** @type {JsonValue} */ (JSON.parse(value))
+        dispatch(action(data))
+      } catch (error) {
+        localStorage.removeItem(key)
+        console.error(error)
+        return undefined
       }
     }
     // Subscribe to state changes and write to localStorage.
-    subscribe(key, (/** @type {unknown} */ value) => {
-      setLocalStorateItem(key, value)
+    subscribe(key, (value) => {
+      try {
+        const data = JSON.stringify(value)
+        localStorage.setItem(key, data)
+      } catch (error) {
+        console.error(error)
+      }
     })
   }
 }
