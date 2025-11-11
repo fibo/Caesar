@@ -82,6 +82,28 @@ export type Action =
       value: boolean
     }
 
+export type WebStorageActionMapper = {
+  key: LocalStorageKey
+  /**
+   * Maps a web storage key to an action.
+   *
+   * @example
+   * {
+   *   key: 'BIP39_NUM_WORDS',
+   *   action: (data) => ({ type: 'SET_BIP39_NUM_WORDS', num: data })
+   * }
+   */
+  action: (data: JsonValue) => Action
+}
+
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [Key in string]: JsonValue } // JSON object
+  | JsonValue[] // JSON array;
+
 /** API exposed by Electron context bridge. */
 export type WindowElectron = {
   chooseFilesDialog: () => Promise<ChooseFileDialogResponse>
