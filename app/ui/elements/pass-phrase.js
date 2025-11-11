@@ -46,7 +46,7 @@ class PassPhrase extends HTMLElement {
       generateButton
     )
 
-    passphraseInput.addEventListener('blur', () => {
+    passphraseInput.addEventListener('input', () => {
       dispatch({ type: 'SET_PASSPHRASE', passphrase: passphraseInput.value })
     })
 
