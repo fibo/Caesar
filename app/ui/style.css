@@ -55,6 +55,10 @@
 
   --max-width: 800px;
   --min-width: 520px;
+
+  /* Durations */
+
+  --duration-1: 250ms;
 }
 
 @layer reset {
@@ -180,6 +184,7 @@
 
     &:hover {
       border-color: var(--ink-0);
+      transition: border-color var(--duration-1);
     }
 
     &:focus-visible {
@@ -225,6 +230,7 @@
 
       &:hover {
         color: var(--ink-0);
+        transition: color var(--duration-1);
       }
     }
   }
@@ -240,6 +246,7 @@
 
     &:has(input:not(checked)) > label:is(:hover) {
       color: var(--ink-0);
+      transition: color var(--duration-1);
     }
   }
 }
@@ -256,6 +263,7 @@
     .input-text:has(input:not(:disabled)) > label
   ):is(:hover) {
     cursor: pointer;
+    transition: cursor var(--duration-1);
   }
 
   button,
