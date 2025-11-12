@@ -21,16 +21,16 @@
     "age-encryption": "0.2.4"
   },
   "devDependencies": {
-    "@electron-forge/cli": "7.8.2",
-    "@electron-forge/maker-dmg": "7.8.2",
-    "@electron-forge/plugin-fuses": "7.8.3",
+    "@electron-forge/cli": "7.10.2",
+    "@electron-forge/maker-dmg": "7.10.2",
+    "@electron-forge/plugin-fuses": "7.10.2",
     "app-builder-lib": "26.0.12",
-    "electron": "37.2.5",
-    "lefthook": "1.12.2",
+    "electron": "39.1.2",
+    "lefthook": "2.0.3",
     "prettier": "3.6.2",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   },
   "volta": {
-    "node": "22.17.1"
+    "node": "22.21.1"
   }
 }
