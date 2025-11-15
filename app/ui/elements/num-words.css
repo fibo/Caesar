@@ -17,6 +17,7 @@ num-words {
 
     & input[type='radio'] {
       appearance: none;
+      box-sizing: content-box;
       width: var(--space-3);
       height: var(--space-3);
       line-height: var(--space-3);
@@ -28,7 +29,28 @@ num-words {
           content: attr(value);
           display: block;
           text-align: center;
+          transition:
+            color var(--duration-1),
+            border-color var(--duration-1);
         }
+      }
+
+      &:hover:not(:checked) {
+        &:before {
+          color: var(--ink-2);
+        }
+      }
+
+      &[data-above='false'] {
+        border-color: var(--ink-1);
+      }
+
+      &[data-above='true'] {
+        background: var(--paper);
+      }
+
+      &:hover {
+        background: var(--paper-light);
       }
     }
   }
