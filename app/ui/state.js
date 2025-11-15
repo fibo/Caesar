@@ -33,7 +33,6 @@ const registry = new Map()
  * @param {State[StateKey]} value
  */
 function publish(key, value) {
-  console.log('publish', key, value)
   // Update state.
   state.set(key, value)
   // Notify subscribers.
@@ -60,7 +59,6 @@ export function reducer(handler) {
 export async function dispatch(action) {
   for (const reducer of reducers) {
     const result = await reducer(action)
-    console.log(action.type, result)
 
     for (const [key, value] of Object.entries(result || {})) {
       publish(/** @type {StateKey} */ (key), value)

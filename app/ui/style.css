@@ -13,19 +13,7 @@
 
   color-scheme: light dark;
 
-  --black: #000;
-  --white: #fff;
-
-  --green-0: hsl(140, 47%, 89%);
-  --green-1: hsl(140, 43%, 81%);
-  --green-2: hsl(140, 39%, 73%);
-  --green-3: hsl(140, 35%, 65%);
-  --green-4: hsl(140, 31%, 57%);
-  --green-5: hsl(140, 27%, 49%);
-  --green-6: hsl(140, 23%, 41%);
-  --green-7: hsl(140, 19%, 33%);
-  --green-8: hsl(140, 15%, 25%);
-  --green-9: hsl(140, 11%, 17%);
+  --primary: oklch(0.83 0.29 140);
 
   --ink-0: light-dark(hsl(0, 0%, 5%), hsl(0, 0%, 95%));
   --ink-1: light-dark(hsl(0, 0%, 30%), hsl(0, 0%, 70%));
@@ -38,7 +26,7 @@
 
   /* Sizes */
 
-  --font-size: 16px;
+  --body-font-size: 16px;
 
   --border-1: 1px;
   --border-2: 2px;
@@ -56,18 +44,16 @@
   --max-width: 800px;
   --min-width: 520px;
 
-  /* Durations */
+  /* Interactions */
 
   --duration-1: 250ms;
 }
 
-@layer reset {
-  *,
-  *::before,
-  *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+@layer typography {
+  body {
+    /* font-family: is set by font-loader */
+    font-size: var(--body-font-size);
+    line-height: 1.5;
   }
 
   input,
@@ -75,13 +61,7 @@
   button {
     font-family: inherit;
     font-size: inherit;
-  }
-}
-
-@layer typography {
-  body {
-    /* font-family: is set by font-loader */
-    font-size: var(--font-size);
+    line-height: var(--input-height);
   }
 
   input[type='text'] {
@@ -94,12 +74,21 @@
 }
 
 @layer layout {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+
   html,
   body {
     height: 100%;
   }
 
   body {
+    box-sizing: border-box;
     /* Hide scrollbars, in particular on Windows */
     overflow: hidden;
   }
@@ -159,32 +148,40 @@
 
 @layer colors {
   body {
-    background-color: light-dark(var(--green-1), var(--green-8));
+    background: light-dark(
+      oklch(from var(--primary) 0.9 0.03 h),
+      oklch(from var(--primary) 0.17 0.05 h)
+    );
   }
 
   *::selection {
-    background-color: light-dark(var(--green-0), var(--green-9));
-    color: light-dark(var(--green-9), var(--green-0));
+    background: light-dark(
+      oklch(from var(--primary) 0.8 c h / 0.2),
+      oklch(from var(--primary) l c h / 0.2)
+    );
+    color: light-dark(
+      oklch(from var(--primary) calc(l * 0.71) c h),
+      oklch(from var(--primary) l c h)
+    );
   }
 
   #splash-screen {
-    background-color: light-dark(var(--white), var(--black));
+    background: light-dark(#fff, #000);
   }
 
   main {
     color: var(--ink-0);
-    background-color: var(--paper-light);
+    background: var(--paper-light);
   }
 
   button,
   input {
     color: var(--ink-0);
-    background-color: var(--paper-light);
+    background: var(--paper-light);
     border-color: var(--ink-3);
 
     &:hover {
       border-color: var(--ink-0);
-      transition: border-color var(--duration-1);
     }
 
     &:focus-visible {
@@ -195,15 +192,27 @@
 
   button {
     &:disabled {
-      background-color: var(--paper-dark);
+      background: var(--paper-dark);
       color: var(--ink-2);
       border-color: var(--ink-3);
     }
 
     &.primary:not(:disabled) {
-      background-color: light-dark(var(--green-1), var(--green-8));
-      color: light-dark(var(--green-8), var(--green-1));
-      border-color: light-dark(var(--green-6), var(--green-4));
+      background: light-dark(
+        oklch(from var(--primary) 0.96 calc(c * 0.2) h),
+        oklch(from var(--primary) 0.4 calc(c * 0.3) h)
+      );
+      color: light-dark(
+        oklch(from var(--primary) calc(l * 0.71) c h),
+        oklch(from var(--primary) l calc(c * 0.71) h)
+      );
+      border-color: var(--primary);
+
+      &:hover,
+      &:focus-visible {
+        color: oklch(from var(--primary) calc(l * 0.1) calc(c * 0.1) h);
+        background: var(--primary);
+      }
     }
   }
 
@@ -213,7 +222,7 @@
 
   input[type='text'] {
     &:read-only {
-      background-color: var(--paper);
+      background: var(--paper);
       cursor: default;
     }
   }
@@ -230,7 +239,6 @@
 
       &:hover {
         color: var(--ink-0);
-        transition: color var(--duration-1);
       }
     }
   }
@@ -246,7 +254,6 @@
 
     &:has(input:not(checked)) > label:is(:hover) {
       color: var(--ink-0);
-      transition: color var(--duration-1);
     }
   }
 }
@@ -263,7 +270,10 @@
     .input-text:has(input:not(:disabled)) > label
   ):is(:hover) {
     cursor: pointer;
-    transition: cursor var(--duration-1);
+    transition:
+      border-color var(--duration-1),
+      background-color var(--duration-1),
+      color var(--duration-1);
   }
 
   button,

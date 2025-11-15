@@ -33,7 +33,6 @@ class CryptDirection extends HTMLElement {
     this.append(encryptLabel, decryptLabel)
 
     encryptInput.addEventListener('change', () => {
-      console.log('change to encrypt')
       dispatch({
         type: 'SET_CRYPT_DIRECTION',
         direction: 'encrypt'
@@ -41,7 +40,6 @@ class CryptDirection extends HTMLElement {
     })
 
     decryptInput.addEventListener('change', () => {
-      console.log('change to decrypt')
       dispatch({
         type: 'SET_CRYPT_DIRECTION',
         direction: 'decrypt'
@@ -49,7 +47,6 @@ class CryptDirection extends HTMLElement {
     })
 
     subscribe('CRYPT_DIRECTION', (direction) => {
-      console.log('xx', direction)
       if (direction === 'encrypt') {
         encryptInput.setAttribute('checked', '')
         decryptInput.removeAttribute('checked')
