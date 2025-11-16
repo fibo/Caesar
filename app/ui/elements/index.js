@@ -1,4 +1,5 @@
 import './action-button.js'
+import './bip-39.js'
 import './choose-files.js'
 import './crypt-direction.js'
 import './files-list.js'

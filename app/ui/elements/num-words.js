@@ -32,8 +32,14 @@ class NumWords extends HTMLElement {
     this.append(label, selectorContainer)
 
     subscribe('BIP39_NUM_WORDS', (num) => {
+      let aboveChecked = false
       selectors.forEach((selector) => {
-        selector.checked = selector.value == num
+        const checked = selector.value == num
+        selector.checked = checked
+        if (checked) selector.setAttribute('checked', '')
+        else selector.removeAttribute('checked')
+        selector.dataset.above = aboveChecked.toString()
+        if (checked) aboveChecked = true
       })
     })
 

@@ -28,14 +28,17 @@ export type ChooseFileDialogResponse =
       status: 'canceled'
     }
 
-export type StateKey =
-  | 'BIP39_NUM_WORDS'
-  | 'CRYPT_DIRECTION'
-  | 'INITIALIZED'
-  | 'INPUT_FILES'
-  | 'LANGUAGE'
-  | 'PASSPHRASE'
-  | 'USE_BIP39'
+export type State = {
+  BIP39_NUM_WORDS: number
+  CRYPT_DIRECTION: CryptDirection
+  INITIALIZED: boolean
+  INPUT_FILES: FileInfo[]
+  LANGUAGE: Language
+  PASSPHRASE: string
+  USE_BIP39: boolean
+}
+
+export type StateKey = keyof State
 
 export type LocalStorageKey = Extract<StateKey, 'BIP39_NUM_WORDS' | 'USE_BIP39'>
 
@@ -78,6 +81,32 @@ export type Action =
       type: 'SET_USE_BIP39'
       value: boolean
     }
+
+export type Reducer = (
+  action: Action
+) => Promise<Partial<State>> | Partial<State>
+
+export type WebStorageActionMapper = {
+  key: LocalStorageKey
+  /**
+   * Maps a web storage key to an action.
+   *
+   * @example
+   * {
+   *   key: 'BIP39_NUM_WORDS',
+   *   action: (data) => ({ type: 'SET_BIP39_NUM_WORDS', num: data })
+   * }
+   */
+  action: (data: JsonValue) => Action
+}
+
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [Key in string]: JsonValue } // JSON object
+  | JsonValue[] // JSON array;
 
 /** API exposed by Electron context bridge. */
 export type WindowElectron = {

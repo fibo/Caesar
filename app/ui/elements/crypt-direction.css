@@ -13,6 +13,7 @@ crypt-direction {
   }
 
   & label {
+    font-size: var(--normal-font-size);
     flex-grow: 1;
     display: inline-block;
     text-align: center;
