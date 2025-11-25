@@ -1,3 +1,4 @@
+import { createHtml } from '../dom.js'
 import { dispatch, subscribe } from '../state.js'
 
 /**
@@ -5,13 +6,13 @@ import { dispatch, subscribe } from '../state.js'
  */
 
 class CryptDirection extends HTMLElement {
-  encryptInput = document.createElement('input')
-  encryptLabel = document.createElement('label')
-  encryptSpan = document.createElement('span')
+  encryptInput = createHtml('input')
+  encryptLabel = createHtml('label')
+  encryptSpan = createHtml('span')
 
-  decryptInput = document.createElement('input')
-  decryptLabel = document.createElement('label')
-  decryptSpan = document.createElement('span')
+  decryptInput = createHtml('input')
+  decryptLabel = createHtml('label')
+  decryptSpan = createHtml('span')
 
   connectedCallback() {
     const {

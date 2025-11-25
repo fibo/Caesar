@@ -1,3 +1,4 @@
+import { createHtml } from '../dom.js'
 import { dispatch, getState, subscribe } from '../state.js'
 
 /**
@@ -5,18 +6,15 @@ import { dispatch, getState, subscribe } from '../state.js'
  */
 
 class PassPhrase extends HTMLElement {
-  input = document.createElement('input')
-  inputContainer = document.createElement('div')
-  inputLabel = document.createElement('label')
+  input = createHtml('input', { spellcheck: 'false', type: 'text' })
+  inputContainer = createHtml('div', { class: 'input-text' })
+  inputLabel = createHtml('label')
   bip39 = document.createElement('bip-39')
 
   connectedCallback() {
     const { input, inputContainer, inputLabel, bip39 } = this
 
-    inputContainer.classList.add('input-text')
     inputLabel.htmlFor = input.id = 'passphrase'
-    input.type = 'text'
-    input.setAttribute('spellcheck', 'false')
     inputContainer.append(inputLabel, input)
 
     this.append(inputContainer, bip39)

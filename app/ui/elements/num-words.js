@@ -1,14 +1,15 @@
+import { createHtml } from '../dom.js'
 import { dispatch, subscribe } from '../state.js'
 
 /**
  * @typedef {import('../../types').Language} Language
  */
 
-class NumWords extends HTMLElement {
+export class NumWords extends HTMLElement {
   maxNumWords = 10
 
-  label = document.createElement('label')
-  selectorContainer = document.createElement('div')
+  label = createHtml('label')
+  selectorContainer = createHtml('div')
 
   /** @type {HTMLInputElement[]} */ selectors = []
 
@@ -18,11 +19,12 @@ class NumWords extends HTMLElement {
     selectorContainer.classList.add('selector-container')
 
     for (let num = 1; num <= maxNumWords; num++) {
-      const selector = document.createElement('input')
+      const selector = createHtml('input', {
+        type: 'radio',
+        name: 'num-words',
+        value: num.toString()
+      })
       selectors.push(selector)
-      selector.type = 'radio'
-      selector.name = 'num-words'
-      selector.value = num.toString()
       selector.addEventListener('change', () => {
         dispatch({ type: 'SET_BIP39_NUM_WORDS', num })
       })
