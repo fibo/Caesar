@@ -1,3 +1,4 @@
+import { createHtml } from '../dom.js'
 import { dispatch, subscribe } from '../state.js'
 
 /**
@@ -5,10 +6,10 @@ import { dispatch, subscribe } from '../state.js'
  */
 
 class Bip39 extends HTMLElement {
-  checkbox = document.createElement('input')
-  checkboxContainer = document.createElement('div')
-  checkboxLabel = document.createElement('label')
-  generateButton = document.createElement('button')
+  checkbox = createHtml('input')
+  checkboxContainer = createHtml('div')
+  checkboxLabel = createHtml('label')
+  generateButton = createHtml('button')
   numWords = document.createElement('num-words')
 
   connectedCallback() {

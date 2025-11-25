@@ -1,3 +1,4 @@
+import { createHtml } from '../dom.js'
 import { dispatch, subscribe } from '../state.js'
 
 /**
@@ -7,7 +8,7 @@ import { dispatch, subscribe } from '../state.js'
  */
 
 class ActionButton extends HTMLElement {
-  button = document.createElement('button')
+  button = createHtml('button')
 
   connectedCallback() {
     const { button } = this

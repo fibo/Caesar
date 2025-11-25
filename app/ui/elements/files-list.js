@@ -1,3 +1,4 @@
+import { createHtml } from '../dom.js'
 import { dispatch, subscribe } from '../state.js'
 
 /**
@@ -6,10 +7,10 @@ import { dispatch, subscribe } from '../state.js'
  */
 
 class FilesList extends HTMLElement {
-  clearListButton = document.createElement('button')
+  clearListButton = createHtml('button')
   chooseFilesButton = document.createElement('choose-files')
-  list = document.createElement('ul')
-  actions = document.createElement('div')
+  list = createHtml('ul')
+  actions = createHtml('div')
 
   connectedCallback() {
     const { chooseFilesButton, clearListButton, list, actions } = this
@@ -34,7 +35,7 @@ class FilesList extends HTMLElement {
       // Update files list.
       list.replaceChildren()
       for (const file of files) {
-        const item = document.createElement('li')
+        const item = createHtml('li')
         item.textContent = file.name
         list.appendChild(item)
       }
