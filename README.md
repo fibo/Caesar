@@ -16,3 +16,16 @@ If your OS or architecture is not included in the _releases page_ it is easy to 
 [Gaius Iulius Caesar](https://en.wikipedia.org/wiki/Julius_Caesar) in 58 B.C. used one of the oldest encryption techniques of which we have records: the Caesar cipher.
 
 The _Caesar_ app name should be pronounced as `[ˈkɐ̯ɛ̯.säːr]` with a hard "K" sound at the beginning and the "ae" diphthong pronounced like the English word "eye",  as in Classical Latin _restituta_ pronunciation.
+
+## Installation
+
+On Mac you need to download latest _dmg_ file from [releases](https://github.com/fibo/Caesar/releases/), click it and move it to _Applications_. Then open a terminal and launch
+
+```shell
+xattr -c /Applications/Caesar.app
+```
+
+otherwise you will get a warning like
+
+> App is damaged ... move it to bin
+
